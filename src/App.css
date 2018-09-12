@@ -2,6 +2,7 @@
 .header {
   padding:10px 5px;
   color: white;
+  overflow: hidden;
 }
 .topbar {
   text-align: center;
@@ -9,7 +10,7 @@
 .float-left { float: left;}
 .float-right { float: right; }
 
-.bg-purple  { background-color: #9627ba; }
+.bg-purple  { background-color: #9627ba!important; }
 .bg-green   { background-color: #16ab39; }
 .bg-yellow  { background-color: #eaae00; }
 .bg-red     { background-color: #db2828; }
@@ -23,14 +24,17 @@
 .bg-grey    { background-color: #838383; }
 .bg-black   { background-color: #27292a; }
 
-.topbar h1 {
-  float: left;
-}
-.header.topbar .brand {
+
+.brand {
   overflow: hidden;
   display: block;
-  width: 50%;
   margin: 0px auto;
+  text-align: center;
 }
 
+.brand h1 {
+  padding: 0px;
+  color: #fff;
+  text-align: center;
 
+}
