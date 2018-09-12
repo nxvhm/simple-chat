@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
-import {Button, Dropdown, Menu} from 'semantic-ui-react';
+import {Button, Dropdown, Menu, Icon} from 'semantic-ui-react';
 
 class Topbar extends Component {
   render(){
 
     const chatRoomsBtn = (
-      <Button icon="align justify" color="black"/> 
+      <Button icon="align justify" color="white"/> 
     )
 
     const profileBtn = (
-      <Button icon="user" color="black"></Button>
+      <Button icon="user" color="white"></Button>
     )
 
     const options = [
@@ -17,7 +17,7 @@ class Topbar extends Component {
         key: 'user',
         text: (
           <span>
-            Signed in as <strong>Bob Smith</strong>
+            Signed in as Bob Smith
           </span>
         ),
         disabled: true,
@@ -34,7 +34,16 @@ class Topbar extends Component {
     return(
       <Menu fixed='top' className='bg-purple'>
         <Menu.Item>
-          <Dropdown trigger={profileBtn} options={options} icon={null} className="float-left" />
+          <Dropdown trigger={profileBtn} icon={null} className="float-left">
+          <Dropdown.Menu>
+            <Dropdown.Item disabled={true}>User Profile</Dropdown.Item>
+
+            <Dropdown.Item> <Icon name="user"></Icon> Profile</Dropdown.Item>
+            <Dropdown.Item> <Icon name="setting"></Icon> Settings</Dropdown.Item>
+            <Dropdown.Item> <Icon name="connectdevelop" color="green"></Icon> Online</Dropdown.Item>
+            <Dropdown.Item> <Icon name="power off"></Icon> Sign Out</Dropdown.Item>
+          </Dropdown.Menu>
+          </Dropdown>
         </Menu.Item>
 
         <Menu.Item className="brand">
