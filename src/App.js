@@ -3,6 +3,7 @@ import './App.css';
 import { Container, Grid } from 'semantic-ui-react'
 import Topbar from './topbar/topbar';
 import ChatPane from './chat-panel/ChatPane';
+import UserList from './user-list/user-list';
 
 class App extends Component {
   render() {
@@ -12,16 +13,14 @@ class App extends Component {
           <Topbar></Topbar>
         </Grid.Row>
 
-        <Grid columns={2}>
-          <Grid.Column width={12} className="chat-pane-container">
+        <Grid columns={2} stretched>
+          <Grid.Column width={13} className="chat-pane-container">
             <ChatPane></ChatPane>
           </Grid.Column>
 
-          <Grid.Column width={4}>
+          <Grid.Column width={3} stretched>
           <Container>
-            <p>
-              Sidebar goes here
-            </p>
+            <UserList></UserList>
           </Container>
           </Grid.Column>
         </Grid>
