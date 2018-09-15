@@ -7,9 +7,9 @@ class UserList extends Component {
       <div className='user-list-container bg-black'>
         <List>
           <List.Item className="chat-user-item">
-            <Image avatar src='/images/avatar/small/rachel.png' />
             <List.Content>
-              <List.Header as='a'>Rachel</List.Header>
+              
+              <List.Header as='a'><Image avatar src='/images/avatar/small/rachel.png' />&nbsp;Rachel</List.Header>
               <List.Description>
                 Last seen watching{' '}
                 <a>
@@ -20,9 +20,12 @@ class UserList extends Component {
             </List.Content>
           </List.Item>
           <List.Item className="chat-user-item">
-            <Image avatar src='/images/avatar/small/lindsay.png' />
             <List.Content>
-              <List.Header as='a'>Lindsay</List.Header>
+              <List.Header as='a'>
+                <Image avatar src='/images/avatar/small/lindsay.png' />
+                &nbsp;
+                Lindsay
+              </List.Header>
               <List.Description>
                 Last seen watching{' '}
                 <a>
@@ -33,9 +36,12 @@ class UserList extends Component {
             </List.Content>
           </List.Item>
           <List.Item className="chat-user-item">
-            <Image avatar src='/images/avatar/small/matthew.png' />
             <List.Content>
-              <List.Header as='a'>Matthew</List.Header>
+              <List.Header as='a'>
+                <Image avatar src='/images/avatar/small/matthew.png' />
+                &nbsp;
+                Matthew
+              </List.Header>
               <List.Description>
                 Last seen watching{' '}
                 <a>
@@ -46,9 +52,11 @@ class UserList extends Component {
             </List.Content>
           </List.Item>
           <List.Item className="chat-user-item">
-            <Image avatar src='/images/avatar/small/jenny.jpg' />
             <List.Content>
-              <List.Header as='a'>Jenny Hess</List.Header>
+              <List.Header as='a'>
+              <Image avatar src='/images/avatar/small/jenny.jpg' />
+              &nbsp;Jenny Hess
+              </List.Header>
               <List.Description>
                 Last seen watching{' '}
                 <a>
@@ -59,9 +67,11 @@ class UserList extends Component {
             </List.Content>
           </List.Item>
           <List.Item className="chat-user-item">
-            <Image avatar src='/images/avatar/small/veronika.jpg' />
             <List.Content>
-              <List.Header as='a'>Veronika Ossi</List.Header>
+              <List.Header as='a'>
+              <Image avatar src='/images/avatar/small/veronika.jpg' />
+              &nbsp;Veronika Ossi
+              </List.Header>
               <List.Description>Has not watched anything recently</List.Description>
             </List.Content>
           </List.Item>

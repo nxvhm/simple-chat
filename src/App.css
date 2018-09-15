@@ -36,6 +36,9 @@ html, body {
 .bg-grey    { background-color: #838383; }
 .bg-black   { background-color: #27292a; }
 
+section#content {
+  padding-top: 63px;
+}
 
 .brand {
   overflow: hidden;

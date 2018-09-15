@@ -13,19 +13,19 @@ class App extends Component {
         <Grid.Row>
           <Topbar></Topbar>
         </Grid.Row>
+        <section id="content">
+          <Grid columns={2} stretched>
+            <Grid.Column width={13} className="chat-pane-container">
+              <ChatPane></ChatPane>
+            </Grid.Column>
 
-        <Grid columns={2} stretched>
-          <Grid.Column width={13} className="chat-pane-container">
-            <ChatPane></ChatPane>
-          </Grid.Column>
-
-          <Grid.Column width={3} stretched>
-          <Container>
-            <UserList></UserList>
-          </Container>
-          </Grid.Column>
-        </Grid>
-        
+            <Grid.Column width={3} stretched>
+            <Container>
+              <UserList></UserList>
+            </Container>
+            </Grid.Column>
+          </Grid>
+        </section>
       </div>
     );
   }
