@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
-import {Button, Grid, Dropdown} from 'semantic-ui-react';
+import {Button, Dropdown, Menu, Icon} from 'semantic-ui-react';
 
 class Topbar extends Component {
   render(){
 
     const chatRoomsBtn = (
-      <Button icon="align justify" color="black"/> 
+      <Button icon="align justify" color="white"/> 
     )
 
     const profileBtn = (
-      <Button icon="user" color="black"></Button>
+      <Button icon="user" color="white"></Button>
     )
 
     const options = [
@@ -17,7 +17,7 @@ class Topbar extends Component {
         key: 'user',
         text: (
           <span>
-            Signed in as <strong>Bob Smith</strong>
+            Signed in as Bob Smith
           </span>
         ),
         disabled: true,
@@ -32,27 +32,36 @@ class Topbar extends Component {
     ]
 
     return(
-      <header className="header topbar bg-purple">
-      <Grid.Row>
-        <Grid columns={3}>
+      <Menu fixed='top' className='bg-purple'>
+        <Menu.Item>
+          <Dropdown trigger={profileBtn} icon={null} className="float-left">
+          <Dropdown.Menu>
+            <Dropdown.Item disabled={true}>User Profile</Dropdown.Item>
 
-          <Grid.Column>
-            <Dropdown trigger={profileBtn} options={options} icon={null} className="float-left" />
-          </Grid.Column>
+            <Dropdown.Item> <Icon name="user"></Icon> Profile</Dropdown.Item>
+            <Dropdown.Item> <Icon name="setting"></Icon> Settings</Dropdown.Item>
+            <Dropdown.Item> <Icon name="connectdevelop" color="green"></Icon> Online</Dropdown.Item>
+            <Dropdown.Item> <Icon name="power off"></Icon> Sign Out</Dropdown.Item>
+          </Dropdown.Menu>
+          </Dropdown>
+        </Menu.Item>
 
-          <Grid.Column>
-          <div class="brand">
-            <h1>Simple Chat</h1>
-          </div> 
-          </Grid.Column>
+        <Menu.Item className="brand">
+            <h1>Chatty</h1>
+        </Menu.Item>
 
-          <Grid.Column>
-            <Dropdown trigger={chatRoomsBtn} options={options} icon={null} 
-              className="float-right" pointing="right top"/>
-          </Grid.Column>
-        </Grid>
-      </Grid.Row>
-      </header>
+        <Menu.Item>
+          <Dropdown 
+            trigger={chatRoomsBtn} 
+            options={options} 
+            icon={null} 
+            className="float-right" 
+            pointing="right top"/>  
+        </Menu.Item>
+
+      </Menu>
+
+
     );
   }
 }
