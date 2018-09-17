@@ -5,11 +5,11 @@ class Topbar extends Component {
   render(){
 
     const chatRoomsBtn = (
-      <Button icon="align justify" color="white"/> 
+      <Button icon="align justify"/> 
     )
 
     const profileBtn = (
-      <Button icon="user" color="white"></Button>
+      <Button icon="user"></Button>
     )
 
     const options = [
@@ -32,7 +32,7 @@ class Topbar extends Component {
     ]
 
     return(
-      <Menu fixed='top' className='bg-purple'>
+      <Menu  className='bg-purple'>
         <Menu.Item>
           <Dropdown trigger={profileBtn} icon={null} className="float-left">
           <Dropdown.Menu>

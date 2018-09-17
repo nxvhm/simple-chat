@@ -37,7 +37,7 @@ html, body {
 .bg-black   { background-color: #27292a; }
 
 section#content {
-  padding-top: 63px;
+  /* padding-top: 63px; */
 }
 
 .brand {
