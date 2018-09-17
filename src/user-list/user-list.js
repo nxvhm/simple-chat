@@ -2,21 +2,20 @@ import React, {Component} from 'react'
 import { List, Image } from 'semantic-ui-react'
 
 class UserList extends Component {
+
+  constructor(props) {
+    super(props);
+    console.log('UserList::props ', props);
+  }
+
   render() {
+
     return(
-      <div className='user-list-container bg-black'>
+      <div className={'user-list-container bg-black '  + (this.props.isHidden === true ? 'hidden' : 'dasdasdas')}>
         <List>
           <List.Item className="chat-user-item">
             <List.Content>
-              
               <List.Header as='a'><Image avatar src='/images/avatar/small/rachel.png' />&nbsp;Rachel</List.Header>
-              <List.Description>
-                Last seen watching{' '}
-                <a>
-                  <b>Arrested Development</b>
-                </a>{' '}
-                just now.
-              </List.Description>
             </List.Content>
           </List.Item>
           <List.Item className="chat-user-item">
@@ -26,13 +25,6 @@ class UserList extends Component {
                 &nbsp;
                 Lindsay
               </List.Header>
-              <List.Description>
-                Last seen watching{' '}
-                <a>
-                  <b>Bob's Burgers</b>
-                </a>{' '}
-                10 hours ago.
-              </List.Description>
             </List.Content>
           </List.Item>
           <List.Item className="chat-user-item">
@@ -42,13 +34,13 @@ class UserList extends Component {
                 &nbsp;
                 Matthew
               </List.Header>
-              <List.Description>
+              {/* <List.Description>
                 Last seen watching{' '}
                 <a>
                   <b>The Godfather Part 2</b>
                 </a>{' '}
                 yesterday.
-              </List.Description>
+              </List.Description> */}
             </List.Content>
           </List.Item>
           <List.Item className="chat-user-item">
@@ -57,13 +49,6 @@ class UserList extends Component {
               <Image avatar src='/images/avatar/small/jenny.jpg' />
               &nbsp;Jenny Hess
               </List.Header>
-              <List.Description>
-                Last seen watching{' '}
-                <a>
-                  <b>Twin Peaks</b>
-                </a>{' '}
-                3 days ago.
-              </List.Description>
             </List.Content>
           </List.Item>
           <List.Item className="chat-user-item">
@@ -72,7 +57,6 @@ class UserList extends Component {
               <Image avatar src='/images/avatar/small/veronika.jpg' />
               &nbsp;Veronika Ossi
               </List.Header>
-              <List.Description>Has not watched anything recently</List.Description>
             </List.Content>
           </List.Item>
           </List>

@@ -16,6 +16,9 @@ html, body {
   color: white;
   overflow: hidden;
 }
+.hidden {
+  display: none;
+}
 .topbar {
   text-align: center;
 }
@@ -38,6 +41,8 @@ html, body {
 
 section#content {
   /* padding-top: 63px; */
+  min-height: 100%;
+  height: 100%;
 }
 
 .brand {
@@ -68,4 +73,8 @@ section#content {
   color: #fff;
   text-align: center;
 
+}
+
+.ui.grid > .column:not(.row) {
+  padding-bottom: 0;
 }

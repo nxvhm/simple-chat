@@ -7,21 +7,38 @@ import ChatPane from './chat-panel/ChatPane';
 import UserList from './user-list/user-list';
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      'userListIsHidden': true
+    };
+    
+    this.toggleUserList = this.toggleUserList.bind(this);
+  }
+
+  toggleUserList (e) {
+    let userListState = !this.state.userListIsHidden;
+    this.setState({userListIsHidden: userListState});
+  }
+
+
   render() {
     return (
       <div className="App">
         <Grid.Row>
-          <Topbar></Topbar>
+          <Topbar toggleUserList = {this.toggleUserList}></Topbar>
         </Grid.Row>
         <section id="content">
           <Grid columns={2} stretched>
-            <Grid.Column width={13} className="chat-pane-container">
+            <Grid.Column width={14} className="chat-pane-container">
               <ChatPane></ChatPane>
             </Grid.Column>
 
-            <Grid.Column width={3} stretched>
+            <Grid.Column width={2} stretched>
             <Container>
-              <UserList></UserList>
+              <UserList isHidden={this.state.userListIsHidden}></UserList>
             </Container>
             </Grid.Column>
           </Grid>

@@ -4,32 +4,9 @@ import {Button, Dropdown, Menu, Icon} from 'semantic-ui-react';
 class Topbar extends Component {
   render(){
 
-    const chatRoomsBtn = (
-      <Button icon="align justify"/> 
-    )
-
     const profileBtn = (
       <Button icon="user"></Button>
     )
-
-    const options = [
-      {
-        key: 'user',
-        text: (
-          <span>
-            Signed in as Bob Smith
-          </span>
-        ),
-        disabled: true,
-      },
-      { key: 'profile', text: 'Your Profile' },
-      { key: 'status', text: 'Status' },
-      { key: 'explore', text: 'Explore' },
-      { key: 'integrations', text: 'Integrations' },
-      { key: 'help', text: 'Help' },
-      { key: 'settings', text: 'Settings' },
-      { key: 'sign-out', text: 'Sign Out' },
-    ]
 
     return(
       <Menu  className='bg-purple'>
@@ -51,12 +28,7 @@ class Topbar extends Component {
         </Menu.Item>
 
         <Menu.Item>
-          <Dropdown 
-            trigger={chatRoomsBtn} 
-            options={options} 
-            icon={null} 
-            className="float-right" 
-            pointing="right top"/>  
+          <Button icon="align justify" className="float-right" onClick={this.props.toggleUserList} />
         </Menu.Item>
 
       </Menu>
