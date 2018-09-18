@@ -32,11 +32,11 @@ class App extends Component {
         </Grid.Row>
         <section id="content">
           <Grid columns={2} stretched>
-            <Grid.Column width={14} className="chat-pane-container">
+            <Grid.Column width={14} className="chat-pane-container no-padding">
               <ChatPane></ChatPane>
             </Grid.Column>
 
-            <Grid.Column width={2} stretched>
+            <Grid.Column width={2} stretched className="no-padding">
             <Container>
               <UserList isHidden={this.state.userListIsHidden}></UserList>
             </Container>
