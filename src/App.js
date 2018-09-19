@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 
-import './App.css';
-import { Container, Grid } from 'semantic-ui-react'
+import {Route} from 'react-router-dom';
+import { Grid } from 'semantic-ui-react'
 import Topbar from './topbar/topbar';
-import ChatPane from './chat-panel/ChatPane';
-import UserList from './user-list/user-list';
+import ChatScreen from './chat/ChatScreen';
+import LoginScreen from './auth/LoginScreen';
+import SignupScreen from './auth/SignupScreen';
+import './App.css';
 
 class App extends Component {
 
@@ -31,17 +33,9 @@ class App extends Component {
           <Topbar toggleUserList = {this.toggleUserList}></Topbar>
         </Grid.Row>
         <section id="content">
-          <Grid columns={2} stretched>
-            <Grid.Column width={14} className="chat-pane-container no-padding">
-              <ChatPane></ChatPane>
-            </Grid.Column>
-
-            <Grid.Column width={2} stretched className="no-padding">
-            <Container>
-              <UserList isHidden={this.state.userListIsHidden}></UserList>
-            </Container>
-            </Grid.Column>
-          </Grid>
+          <Route exact path="/" render={(props) => <ChatScreen userListIsHidden={this.state.userListIsHidden} />} />
+          <Route path="/login" component={LoginScreen} />
+          <Route path="/signup" component={SignupScreen} />
         </section>
       </div>
     );
