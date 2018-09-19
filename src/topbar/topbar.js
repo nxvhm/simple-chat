@@ -9,7 +9,7 @@ class Topbar extends Component {
     )
 
     return(
-      <Menu  className='bg-purple'>
+      <Menu className='bg-blue topnav'>
         <Menu.Item>
           <Dropdown trigger={profileBtn} icon={null} className="float-left">
           <Dropdown.Menu>
