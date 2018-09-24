@@ -9,57 +9,27 @@ class UserList extends Component {
   }
 
   render() {
+    let userList = [
+      {name: 'Rachel', 'avatar': '/images/avatar/small/rachel.png'},
+      {name: 'Lindsay', 'avatar': '/images/avatar/small/lindsay.png'},
+      {name: 'Matthew', 'avatar': '/images/avatar/small/matthew.png'},
+      {name: 'Jenny Hess', 'avatar': '/images/avatar/small/jenny.png'},
+      {name: 'Veronika Ossi', 'avatar': '/images/avatar/small/veronika.png'}
+    ];
+
+    const ListItem = (props) => (
+      <List.Item className="chat-user-item">
+        <List.Content>
+        <List.Header as='a'><Image avatar src={props.user.avatar} />{props.user.name}</List.Header>
+        </List.Content>
+      </List.Item>
+    );
 
     return(
       <div className={'user-list-container bg-black '  + (this.props.isHidden === true ? 'hidden' : 'dasdasdas')}>
         <List>
-          <List.Item className="chat-user-item">
-            <List.Content>
-              <List.Header as='a'><Image avatar src='/images/avatar/small/rachel.png' />&nbsp;Rachel</List.Header>
-            </List.Content>
-          </List.Item>
-          <List.Item className="chat-user-item">
-            <List.Content>
-              <List.Header as='a'>
-                <Image avatar src='/images/avatar/small/lindsay.png' />
-                &nbsp;
-                Lindsay
-              </List.Header>
-            </List.Content>
-          </List.Item>
-          <List.Item className="chat-user-item">
-            <List.Content>
-              <List.Header as='a'>
-                <Image avatar src='/images/avatar/small/matthew.png' />
-                &nbsp;
-                Matthew
-              </List.Header>
-              {/* <List.Description>
-                Last seen watching{' '}
-                <a>
-                  <b>The Godfather Part 2</b>
-                </a>{' '}
-                yesterday.
-              </List.Description> */}
-            </List.Content>
-          </List.Item>
-          <List.Item className="chat-user-item">
-            <List.Content>
-              <List.Header as='a'>
-              <Image avatar src='/images/avatar/small/jenny.jpg' />
-              &nbsp;Jenny Hess
-              </List.Header>
-            </List.Content>
-          </List.Item>
-          <List.Item className="chat-user-item">
-            <List.Content>
-              <List.Header as='a'>
-              <Image avatar src='/images/avatar/small/veronika.jpg' />
-              &nbsp;Veronika Ossi
-              </List.Header>
-            </List.Content>
-          </List.Item>
-          </List>
+          {userList.map(user => <ListItem user={user} key={user.name}></ListItem>)}
+        </List>
       </div>
     )
   }
