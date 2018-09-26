@@ -10,7 +10,7 @@ class ChatPane extends Component {
         </p>
 
       <div className="msg-input-container">
-        <Input name="msg" placeholder="Type your message..." />
+        <Input name="msg" fluid placeholder="Type your message..." />
       </div>
       </div>
     )

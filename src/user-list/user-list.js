@@ -45,7 +45,7 @@ class UserList extends Component {
     return(
       <div className={'user-list bg-black '  + (this.props.isHidden === true ? 'hidden' : '')} data-simplebar>
         <List>
-          {userList.map(user => <ListItem user={user} key={user.name}></ListItem>)}
+          {userList.map(user => <ListItem user={user} key={Math.random()+user.name}></ListItem>)}
         </List>
       </div>
     )

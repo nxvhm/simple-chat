@@ -33,7 +33,6 @@ class Topbar extends Component {
 
       </Menu>
 
-
     );
   }
 }
