@@ -138,7 +138,6 @@ section#content {
   position: absolute;
   top: 64px;
   right: 0;
-  bottom: 55px;
   overflow-y: scroll;
 }
 .user-list::-webkit-scrollbar {
@@ -168,7 +167,7 @@ outline: 1px solid slategrey;
     min-height: 100%;
     position: absolute;
     right: 0;
-    bottom: -50px    
+    bottom: 50px;
   }  
 }
 
@@ -186,5 +185,6 @@ outline: 1px solid slategrey;
   .user-list {
     width: 250px;
     border-left: 1px solid green;
+    bottom: 100px;
   }    
 }
