@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import { List, Image } from 'semantic-ui-react'
+import 'simplebar';
+import 'simplebar/dist/simplebar.css';
 
 class UserList extends Component {
 
@@ -13,8 +15,23 @@ class UserList extends Component {
       {name: 'Rachel', 'avatar': '/images/avatar/small/rachel.png'},
       {name: 'Lindsay', 'avatar': '/images/avatar/small/lindsay.png'},
       {name: 'Matthew', 'avatar': '/images/avatar/small/matthew.png'},
-      {name: 'Jenny Hess', 'avatar': '/images/avatar/small/jenny.png'},
-      {name: 'Veronika Ossi', 'avatar': '/images/avatar/small/veronika.png'}
+      {name: 'Jenny Hess', 'avatar': '/images/avatar/small/jenny.jpg'},
+      {name: 'Veronika Ossi', 'avatar': '/images/avatar/small/veronika.jpg'},
+      {name: 'Rachel', 'avatar': '/images/avatar/small/rachel.png'},
+      {name: 'Lindsay', 'avatar': '/images/avatar/small/lindsay.png'},
+      {name: 'Matthew', 'avatar': '/images/avatar/small/matthew.png'},
+      {name: 'Jenny Hess', 'avatar': '/images/avatar/small/jenny.jpg'},
+      {name: 'Veronika Ossi', 'avatar': '/images/avatar/small/veronika.jpg'},
+      {name: 'Rachel', 'avatar': '/images/avatar/small/rachel.png'},
+      {name: 'Lindsay', 'avatar': '/images/avatar/small/lindsay.png'},
+      {name: 'Matthew', 'avatar': '/images/avatar/small/matthew.png'},
+      {name: 'Jenny Hess', 'avatar': '/images/avatar/small/jenny.jpg'},
+      {name: 'Veronika Ossi', 'avatar': '/images/avatar/small/veronika.jpg'},
+      {name: 'Rachel', 'avatar': '/images/avatar/small/rachel.png'},
+      {name: 'Lindsay', 'avatar': '/images/avatar/small/lindsay.png'},
+      {name: 'Matthew2', 'avatar': '/images/avatar/small/matthew.png'},
+      {name: 'Jenny Hess2', 'avatar': '/images/avatar/small/jenny.jpg'},
+      {name: 'Veronika Ossi2', 'avatar': '/images/avatar/small/veronika.jpg'}                        
     ];
 
     const ListItem = (props) => (
@@ -26,7 +43,7 @@ class UserList extends Component {
     );
 
     return(
-      <div className={'user-list-container bg-black '  + (this.props.isHidden === true ? 'hidden' : 'dasdasdas')}>
+      <div className={'user-list bg-black '  + (this.props.isHidden === true ? 'hidden' : '')} data-simplebar>
         <List>
           {userList.map(user => <ListItem user={user} key={user.name}></ListItem>)}
         </List>

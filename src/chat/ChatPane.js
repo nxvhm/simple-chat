@@ -1,14 +1,18 @@
 import React, { Component } from 'react'
-import { Segment } from 'semantic-ui-react'
+import { Input } from 'semantic-ui-react'
 
 class ChatPane extends Component {
   render() {
     return(
-      <Segment>
+      <div className='bg-grey-light'>
         <p>
           Chat Pane Goes here
         </p>
-      </Segment>
+
+      <div className="msg-input-container">
+        <Input name="msg" placeholder="Type your message..." />
+      </div>
+      </div>
     )
   };
 }

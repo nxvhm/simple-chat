@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ChatPane from './ChatPane';
 import UserList from './../user-list/user-list';
-import { Container, Grid } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 
 /**
  * Chat Screen Component with ChatPane for messages
@@ -15,18 +15,17 @@ class ChatScreen extends Component {
 
     render() {
       return(
-
-        <Grid columns={2} stretched>
-          <Grid.Column width={14} className="chat-pane-container">
+        <div className="chat-screen-container">
+        <Grid stretched>
+          <Grid.Column width={16} className="chat-pane-container">
             <ChatPane></ChatPane>
           </Grid.Column>
-
-          <Grid.Column width={2} stretched>
-          <Container>
-            <UserList isHidden={this.props.userListIsHidden}></UserList>
-          </Container>
-          </Grid.Column>
         </Grid>
+
+        <div className="user-list-container">
+          <UserList isHidden={this.props.userListIsHidden}></UserList>
+        </div>
+        </div>        
       )
     }
 }

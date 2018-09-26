@@ -14,7 +14,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      'userListIsHidden': true
+      'userListIsHidden': false
     };
     
     this.toggleUserList = this.toggleUserList.bind(this);
