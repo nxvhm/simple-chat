@@ -16,15 +16,12 @@ class ChatScreen extends Component {
     render() {
       return(
         <div className="chat-screen-container">
-        <Grid stretched>
-          <Grid.Column width={16} className="chat-pane-container">
-            <ChatPane></ChatPane>
-          </Grid.Column>
-        </Grid>
+          
+          <ChatPane></ChatPane>
 
-        <div className="user-list-container">
-          <UserList isHidden={this.props.userListIsHidden}></UserList>
-        </div>
+          <div className="user-list-container">
+            <UserList isHidden={this.props.userListIsHidden}></UserList>
+          </div>
         </div>        
       )
     }
