@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import ChatPane from './ChatPane';
 import UserList from './../user-list/user-list';
-import { Grid } from 'semantic-ui-react'
 
 /**
  * Chat Screen Component with ChatPane for messages

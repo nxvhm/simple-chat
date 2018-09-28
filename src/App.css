@@ -37,7 +37,7 @@ html, body {
 .position-relative {
   position: relative;
 }
-
+.text-center { text-align: center; }
 .bg-purple  { background-color: #9627ba!important; }
 .bg-green   { background-color: #16ab39; }
 .bg-yellow  { background-color: #eaae00; }
@@ -190,6 +190,7 @@ section#content {
     width: 200px;
     min-height: 100%;
     right: 0;
+    bottom: 0;
   }  
 }
 
