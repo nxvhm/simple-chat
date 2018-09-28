@@ -1,38 +1,31 @@
 import React, {Component} from 'react'
+import axios from 'axios';
 import { List, Image } from 'semantic-ui-react'
 import 'simplebar';
 import 'simplebar/dist/simplebar.css';
-
 class UserList extends Component {
 
   constructor(props) {
     super(props);
-    console.log('UserList::props ', props);
+
+    this.state = {
+      usersList: []
+    }
+  }
+
+  componentDidMount() {
+    let url = process.env.REACT_APP_API_URI;
+
+    axios.get(`${url}/users/active`)
+      .then(res => {
+        const usersList = res.data;
+        this.setState({ usersList });
+
+      })
   }
 
   render() {
-    let userList = [
-      {name: 'Rachel', 'avatar': '/images/avatar/small/rachel.png'},
-      {name: 'Lindsay', 'avatar': '/images/avatar/small/lindsay.png'},
-      {name: 'Matthew', 'avatar': '/images/avatar/small/matthew.png'},
-      {name: 'Jenny Hess', 'avatar': '/images/avatar/small/jenny.jpg'},
-      {name: 'Veronika Ossi', 'avatar': '/images/avatar/small/veronika.jpg'},
-      {name: 'Rachel', 'avatar': '/images/avatar/small/rachel.png'},
-      {name: 'Lindsay', 'avatar': '/images/avatar/small/lindsay.png'},
-      {name: 'Matthew', 'avatar': '/images/avatar/small/matthew.png'},
-      {name: 'Jenny Hess', 'avatar': '/images/avatar/small/jenny.jpg'},
-      {name: 'Veronika Ossi', 'avatar': '/images/avatar/small/veronika.jpg'},
-      {name: 'Rachel', 'avatar': '/images/avatar/small/rachel.png'},
-      {name: 'Lindsay', 'avatar': '/images/avatar/small/lindsay.png'},
-      {name: 'Matthew', 'avatar': '/images/avatar/small/matthew.png'},
-      {name: 'Jenny Hess', 'avatar': '/images/avatar/small/jenny.jpg'},
-      {name: 'Veronika Ossi', 'avatar': '/images/avatar/small/veronika.jpg'},
-      {name: 'Rachel', 'avatar': '/images/avatar/small/rachel.png'},
-      {name: 'Lindsay', 'avatar': '/images/avatar/small/lindsay.png'},
-      {name: 'Matthew2', 'avatar': '/images/avatar/small/matthew.png'},
-      {name: 'Jenny Hess2', 'avatar': '/images/avatar/small/jenny.jpg'},
-      {name: 'Veronika Ossi2', 'avatar': '/images/avatar/small/veronika.jpg'}                        
-    ];
+
 
     const ListItem = (props) => (
       <List.Item className="chat-user-item">
@@ -45,7 +38,7 @@ class UserList extends Component {
     return(
       <div className={'user-list bg-black '  + (this.props.isHidden === true ? 'hidden-list' : '')} data-simplebar>
         <List>
-          {userList.map(user => <ListItem user={user} key={Math.random()+user.name}></ListItem>)}
+          {this.state.usersList.map(user => <ListItem user={user} key={Math.random()+user.name} />)}
         </List>
       </div>
     )
