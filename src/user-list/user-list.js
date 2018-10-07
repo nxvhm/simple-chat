@@ -20,7 +20,6 @@ class UserList extends Component {
       .then(res => {
         const usersList = res.data;
         this.setState({ usersList });
-
       })
   }
 

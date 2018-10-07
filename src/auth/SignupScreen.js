@@ -9,12 +9,12 @@ class SignupScreen extends Component {
 
     this.state = {
       email: '',
-      validEmail: false,
+      emailValid: false,
       password: '',
-      validPassword: false,
-      password_confirm: '',
-      validUsername: false,
+      passwordValid: false,
+      passwordConfirm: '',
       username: '',
+      usernameValid: false,
       gender: '',
     };
 
@@ -26,7 +26,9 @@ class SignupScreen extends Component {
   handleUserInput(e) {
     const name = e.target.name;
     const value = e.target.value;
-    this.setState({[name]: value});
+    const validField = [name]+'Valid';
+    this.setState({[name]: value, [validField]: });
+    console.log([name]+'Valid', this.state[validField]);
   }
 
   // On submit listener
@@ -37,7 +39,11 @@ class SignupScreen extends Component {
     this.setState({validUsername: !validator.isEmpty(this.state.username)});
 
     console.log(validator.isEmail(this.state.email));
-    console.log(validator.equals(this.state.password_confirm, this.state.password));
+    console.log(validator.equals(this.state.passwordConfirm, this.state.password));
+  }
+
+  validate() {
+    
   }
 
   render() {
