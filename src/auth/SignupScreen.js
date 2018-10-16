@@ -8,13 +8,15 @@ class SignupScreen extends Component {
     super(props);
 
     this.state = {
+
+      // User Input States
       email: '',
       password: '',
       passwordConfirm: '',
       username: '',
       gender: '',
       
-      // Validation
+      // Input Validation States
       emailValid: false,
       passwordValid: false,
       usernameValid: false,
@@ -33,12 +35,8 @@ class SignupScreen extends Component {
     const value = e.target.value;
     this.setState({[name]: value}, () => {this.validateField(name, value)});
   }
-  
-  // On submit listener
-  handleSubmit(e) {
-    e.preventDefault();
-  }
 
+  // Validate single field value
   validateField(field, value) {
     let emailValid = this.state.emailValid;
     let passwordValid = this.state.passwordValid;
@@ -73,15 +71,20 @@ class SignupScreen extends Component {
       passwordValid: passwordValid,
       usernameValid: usernameValid,
       passwordConfirmValid: passwordConfirmValid
-    }, this.valdateForm);
+    });
 
   }
 
-  validateForm() {
-    this.setState({formValid: this.state.emailValid 
-      && this.state.passwordValid && this.state.usernameValid});
+  // Submit form
+  handleSubmit(e) {
+    e.preventDefault();
+    let validForm = this.isFormValid();
+    console.log(validForm);
   }
-  
+
+  isFormValid() {
+    return (this.state.emailValid) && (this.state.passwordValid) && (this.state.usernameValid) && (this.state.passwordConfirmValid);
+  }
 
   render() {
     let options = [
