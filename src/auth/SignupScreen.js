@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Container, Form, Button } from 'semantic-ui-react'
 import validator from 'validator';
+import axios from 'axios';
 
 class SignupScreen extends Component {
 
@@ -72,14 +73,25 @@ class SignupScreen extends Component {
       usernameValid: usernameValid,
       passwordConfirmValid: passwordConfirmValid
     });
-
   }
 
-  // Submit form
+  // Send signup request if form is valid
   handleSubmit(e) {
+    
     e.preventDefault();
-    let validForm = this.isFormValid();
-    console.log(validForm);
+
+    let apiUrl = process.env.REACT_APP_API_URI; 
+
+    if (this.isFormValid()) {
+      axios.post(`${apiUrl}/login`, {
+        username: this.state.username,
+        password: this.state.password,
+        email: this.state.email,
+        gender: this.state.gender,
+      }).then(function(response) {
+        console.log(response);
+      })
+    }
   }
 
   isFormValid() {
@@ -87,10 +99,6 @@ class SignupScreen extends Component {
   }
 
   render() {
-    let options = [
-        {key:1,text: 'Male', value: 'male'},
-        {key:2,text: 'Female', value: 'female'}
-    ];
 
     return(
       <Container>
@@ -135,11 +143,10 @@ class SignupScreen extends Component {
             error={!this.state.passwordConfirmValid}
           />
 
-          <Form.Select 
-            label='Gender' 
-            options={options} 
-            placeholder='Gender' 
-          />
+          <Form.Field label="Gender" name="gender" control='select'>
+            <option value='1'>Male</option>
+            <option value='2'>Female</option>
+          </Form.Field>
 
           <Button size="huge" primary>Sign Up</Button>
         </Form>
