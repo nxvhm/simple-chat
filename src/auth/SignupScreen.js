@@ -15,7 +15,7 @@ class SignupScreen extends Component {
       password: '',
       passwordConfirm: '',
       username: '',
-      gender: '',
+      gender: 1,
       
       // Input Validation States
       emailValid: false,
@@ -76,20 +76,32 @@ class SignupScreen extends Component {
   }
 
   // Send signup request if form is valid
-  handleSubmit(e) {
+  handleSubmit() {
     
-    e.preventDefault();
+    // e.preventDefault();
 
     let apiUrl = process.env.REACT_APP_API_URI; 
-
     if (this.isFormValid()) {
-      axios.post(`${apiUrl}/login`, {
+      var self = this;
+      axios.post(`${apiUrl}/signup`, {
         username: this.state.username,
         password: this.state.password,
         email: this.state.email,
         gender: this.state.gender,
       }).then(function(response) {
-        console.log(response);
+        if (response.data.errors) {
+          let errors = response.data.errors;
+
+          Object.keys(errors).map(key => {
+            
+            let field = key+'Valid';
+            
+            self.setState({
+              [field]: false,
+              formErrors: {[key]:errors[key].message}
+            });
+          });
+        }
       })
     }
   }
