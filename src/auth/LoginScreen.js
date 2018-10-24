@@ -15,6 +15,7 @@ class LoginScreen extends Component {
                     <Form.Field control={Input} label='Your username' placeholder='username' />
                     <Form.Field control={Input} label='Last name' placeholder='Last name' />
                     <Form.Field control={Select} label='Gender' options={options} placeholder='Gender' />
+                    <Button size="huge" type="submit" primary>Login</Button>
                 </Form>
             </Container>
         )
