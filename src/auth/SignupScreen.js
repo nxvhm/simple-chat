@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import { Container, Form, Button } from 'semantic-ui-react'
 import validator from 'validator';
 import axios from 'axios';
@@ -96,11 +97,18 @@ class SignupScreen extends Component {
             
             let field = key+'Valid';
             
+            let formErrors = self.state.formErrors;
+            formErrors[key] = errors[key].message;
+
             self.setState({
               [field]: false,
-              formErrors: {[key]:errors[key].message}
+             formErrors
             });
+            
           });
+        } else if (response.data.success) {
+          console.log(response.data.success);
+          return <Redirect to="/" />
         }
       })
     }
