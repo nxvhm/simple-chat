@@ -66,6 +66,9 @@ class SignupScreen extends Component {
         passwordConfirmValid = validator.equals(value, this.state.password);
         formErrors.passwordConfirm = passwordConfirmValid ? '' : 'Passwords does not match';
       break;
+
+      default:
+        break;
     }
 
     this.setState({formErrors: formErrors,
