@@ -24,6 +24,7 @@ class SignupScreen extends Component {
       usernameValid: false,
       passwordConfirmValid: false,
       formErrors: {email: '', password: '', passwordConfirm: '', username: ''},
+      loginRedirect: false,
       formValid: false,
     };
 
@@ -58,8 +59,8 @@ class SignupScreen extends Component {
         break;
 
       case 'username':
-        usernameValid = !validator.isEmpty(value) && (value.length >= 6);
-        formErrors.username = usernameValid ? '' : 'Min. length is 6 chars.';
+        usernameValid = !validator.isEmpty(value) && (value.length >= 4);
+        formErrors.username = usernameValid ? '' : 'Min. length is 4 chars.';
         break;
 
       case 'passwordConfirm':
@@ -110,8 +111,7 @@ class SignupScreen extends Component {
             
           });
         } else if (response.data.success) {
-          console.log(response.data.success);
-          return <Redirect to="/" />
+          self.setState({loginRedirect: true});
         }
       })
     }
@@ -123,10 +123,18 @@ class SignupScreen extends Component {
 
   render() {
 
+    if (this.state.loginRedirect) {
+      return <Redirect to={{
+        pathname: '/login',
+        state: {successMsg: true, successMsgContent: 'Your registration was successfull, you can login in your account now'}
+      }} />;  
+    }
+
     return(
       <Container>
         <h1 className="text-center">Create  Account</h1>
 
+      
         <Form onSubmit={this.handleSubmit}>
 
           <Form.Input type="text" 
