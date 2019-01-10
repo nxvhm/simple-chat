@@ -179,7 +179,7 @@ class SignupScreen extends Component {
             <option value='2'>Female</option>
           </Form.Field>
 
-          <Button size="huge" primary>Sign Up</Button>
+          <Button size="huge" disabled={!this.isFormValid()} primary>Sign Up</Button>
         </Form>
       </Container>
     )

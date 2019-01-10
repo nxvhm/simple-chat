@@ -14,7 +14,7 @@ class LoginScreen extends Component {
           emailValid: false,
           passwordValid: false,
           requestError: false,
-          warningMsg: false,
+          warning: false,
           warningMsgContent: '',
           successMsg: false,
           successMsgContent: '',
@@ -85,13 +85,26 @@ class LoginScreen extends Component {
 
       let apiUrl = process.env.REACT_APP_API_URI; 
       let self = this;
+
+      self.setState({warning: false});
+      self.setState({warningMsgContent: null});
+
       axios.post(`${apiUrl}/login`, {
         email: this.state.email,
         password: this.state.password
       }).then(function(response){
         console.log(response);
         if (response.data.error) {
-          self.setState({warningMsg: true});
+
+          // Unsuccessfull Login attemp
+          self.setState({warning: true});
+          self.setState({warningMsgContent: response.data.msg});
+
+        } else if (response.data.token) {
+          // If JWT token provided in response, login is successfull
+          self.setState({successMsg: true});
+          self.setState({successMsgContent: "GG WP"});
+          
         }
       });
 
@@ -117,11 +130,11 @@ class LoginScreen extends Component {
               content={this.state.successMsgContent}
             />
 
-            <Message name="warningMsg" hidden={!this.state.warningMsg}
+            <Message name="warningMsg" hidden={!this.state.warning}
               onDismiss={this.handleDismiss}
               warning
-              header='You must register before you can do that!'
-              content='Visit our registration page, then try again.'
+              header={this.state.warningMsgContent}
+              content='If you dont have an account, you can register from here!'
             />          
             <Form onSubmit={this.handleSubmit}>
 
@@ -143,7 +156,7 @@ class LoginScreen extends Component {
                   error={!this.state.passwordValid} 
                 />
 
-                <Button size="huge" type="submit" primary>Login</Button>
+                <Button size="huge" type="submit" disabled={!this.isFormValid()} primary>Login</Button>
             </Form>
         </Container>
       )
