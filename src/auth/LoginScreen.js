@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Button, Form, Message, Container } from 'semantic-ui-react'
 import validator from 'validator';
 import axios from 'axios';
+import Auth from './../services/Auth';
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -20,10 +21,10 @@ class LoginScreen extends Component {
           successMsgContent: '',
           formErrors: {email: '', password: ''}
       }
-
+      this.Auth = new Auth();
       this.handleSubmit     = this.handleSubmit.bind(this);
-      this.handleUserInput  = this.handleUserInput.bind(this);  
-      this.handleDismiss  = this.handleDismiss.bind(this);      
+      this.handleUserInput  = this.handleUserInput.bind(this);
+      this.handleDismiss  = this.handleDismiss.bind(this);
 
     }
     componentWillMount() {
@@ -31,13 +32,13 @@ class LoginScreen extends Component {
       let locProps = this.props.location;
 
       let successMsg = locProps.state && locProps.state.successMsg
-        ? true : false; 
+        ? true : false;
 
       let successMsgContent = locProps.state && locProps.state.successMsgContent
-      ? locProps.state.successMsgContent : ''; 
-                  
+      ? locProps.state.successMsgContent : '';
+
       this.setState({successMsg, successMsgContent});
-    }    
+    }
     // Update state when user inputs data
     handleUserInput(e) {
       const name = e.target.name;
@@ -56,7 +57,7 @@ class LoginScreen extends Component {
           emailValid = validator.isEmail(value);
           formErrors.email = emailValid ? '' : 'Invalid email address';
           break;
-  
+
         case 'password':
           passwordValid = !validator.isEmpty(value) && (value.length >= 6);
           formErrors.password = passwordValid ? '' : 'Min. Length 6 characters';
@@ -66,8 +67,8 @@ class LoginScreen extends Component {
       }
 
       // Update state with validation results
-      this.setState({formErrors: formErrors, 
-        emailValid: emailValid, 
+      this.setState({formErrors: formErrors,
+        emailValid: emailValid,
         passwordValid: passwordValid
       });
     }
@@ -83,28 +84,22 @@ class LoginScreen extends Component {
         return false;
       }
 
-      let apiUrl = process.env.REACT_APP_API_URI; 
-      let self = this;
+      let apiUrl = process.env.REACT_APP_API_URI;
 
-      self.setState({warning: false});
-      self.setState({warningMsgContent: null});
+      this.setState({warning: false});
+      this.setState({warningMsgContent: null});
 
-      axios.post(`${apiUrl}/login`, {
+      this.Auth.login(`${apiUrl}/login`, {
         email: this.state.email,
         password: this.state.password
-      }).then(function(response){
-        console.log(response);
-        if (response.data.error) {
-
+      }).then(loginResult => {
+        if (loginResult.error) {
           // Unsuccessfull Login attemp
-          self.setState({warning: true});
-          self.setState({warningMsgContent: response.data.msg});
-
-        } else if (response.data.token) {
-          // If JWT token provided in response, login is successfull
-          self.setState({successMsg: true});
-          self.setState({successMsgContent: "GG WP"});
-          
+          this.setState({warning: true});
+          this.setState({warningMsgContent: loginResult.msg});
+        } else {
+          this.setState({successMsg: true});
+          this.setState({successMsgContent: "GG WP"});
         }
       });
 
@@ -118,7 +113,7 @@ class LoginScreen extends Component {
     }
 
     render() {
-      // this.props.location.state.successMsgContent;      
+      // this.props.location.state.successMsgContent;
       return(
         <Container>
           <h1 className="text-center">Login</h1>
@@ -135,12 +130,12 @@ class LoginScreen extends Component {
               warning
               header={this.state.warningMsgContent}
               content='If you dont have an account, you can register from here!'
-            />          
+            />
             <Form onSubmit={this.handleSubmit}>
 
                 <Form.Input type="email"
-                  name='email' 
-                  label='Email' 
+                  name='email'
+                  label='Email'
                   placeholder='Your Email'
                   value={this.state.email}
                   onChange={(event) => this.handleUserInput(event)}
@@ -148,12 +143,12 @@ class LoginScreen extends Component {
                 />
 
                 <Form.Input type="password"
-                  name='password' 
-                  label='Your Password' 
+                  name='password'
+                  label='Your Password'
                   placeholder='Enter Your Password'
                   value={this.state.password}
                   onChange={(event) => this.handleUserInput(event)}
-                  error={!this.state.passwordValid} 
+                  error={!this.state.passwordValid}
                 />
 
                 <Button size="huge" type="submit" disabled={!this.isFormValid()} primary>Login</Button>
