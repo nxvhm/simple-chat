@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import { Button, Form, Message, Container } from 'semantic-ui-react'
 import validator from 'validator';
-import axios from 'axios';
 import Auth from './../services/Auth';
 
 class LoginScreen extends Component {
@@ -19,9 +19,9 @@ class LoginScreen extends Component {
           warningMsgContent: '',
           successMsg: false,
           successMsgContent: '',
-          formErrors: {email: '', password: ''}
+          formErrors: {email: '', password: ''},
+          redirect: false
       }
-      this.Auth = new Auth();
       this.handleSubmit     = this.handleSubmit.bind(this);
       this.handleUserInput  = this.handleUserInput.bind(this);
       this.handleDismiss  = this.handleDismiss.bind(this);
@@ -39,6 +39,14 @@ class LoginScreen extends Component {
 
       this.setState({successMsg, successMsgContent});
     }
+
+    componentDidMount() {
+      if (Auth.check()) {
+        this.setState({redirect: true});
+        console.log(Auth.check(), this.state.redirect);
+      }
+    }
+
     // Update state when user inputs data
     handleUserInput(e) {
       const name = e.target.name;
@@ -89,7 +97,7 @@ class LoginScreen extends Component {
       this.setState({warning: false});
       this.setState({warningMsgContent: null});
 
-      this.Auth.login(`${apiUrl}/login`, {
+      Auth.login(`${apiUrl}/login`, {
         email: this.state.email,
         password: this.state.password
       }).then(loginResult => {
@@ -100,6 +108,9 @@ class LoginScreen extends Component {
         } else {
           this.setState({successMsg: true});
           this.setState({successMsgContent: "GG WP"});
+          setTimeout(() => {
+            this.props.history.replace("/");
+          }, 1000)
         }
       });
 
@@ -113,6 +124,9 @@ class LoginScreen extends Component {
     }
 
     render() {
+      const { redirect } = this.state;
+      if (redirect)
+        return <Redirect to='/'></Redirect>
       // this.props.location.state.successMsgContent;
       return(
         <Container>

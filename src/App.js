@@ -6,6 +6,8 @@ import Topbar from './topbar/topbar';
 import ChatScreen from './chat/ChatScreen';
 import LoginScreen from './auth/LoginScreen';
 import SignupScreen from './auth/SignupScreen';
+import Auth from './services/Auth';
+
 import './App.css';
 
 class App extends Component {
@@ -16,8 +18,11 @@ class App extends Component {
     this.state = {
       'userListIsHidden': false
     };
-    
     this.toggleUserList = this.toggleUserList.bind(this);
+  }
+
+  componentDidMount() {
+    console.log('User found in app', Auth.check());
   }
 
   toggleUserList (e) {
