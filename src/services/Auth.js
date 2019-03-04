@@ -41,7 +41,7 @@ const Auth = {
   /**
    * Check if there's a logged in user in the app
    * @param {void}
-   * @return  {boolean}
+   * @return  {mixed} Object with user data if available or false
    */
   check: () => {
     let token = Auth.getToken();
@@ -49,7 +49,7 @@ const Auth = {
     try {
       let userData = decode(token);
 
-      return (userData.exp > Date.now() / 1000) ? true : false;
+      return (userData.exp > Date.now() / 1000) ? userData : false;
 
     } catch (error) {
       console.log("Token expired/invalid or not provided");
