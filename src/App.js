@@ -6,6 +6,7 @@ import Topbar from './topbar/topbar';
 import ChatScreen from './chat/ChatScreen';
 import LoginScreen from './auth/LoginScreen';
 import SignupScreen from './auth/SignupScreen';
+import HomeScreen from './components/HomeScreen/HomeScreen';
 import Auth from './services/Auth';
 
 import './App.css';
@@ -16,13 +17,14 @@ class App extends Component {
     super(props);
 
     this.state = {
-      'userListIsHidden': false
+      userListIsHidden: false,
+      user: false
     };
     this.toggleUserList = this.toggleUserList.bind(this);
   }
 
-  componentDidMount() {
-    console.log('User found in app', Auth.check());
+  componentWillMount() {
+    this.setState({user: Auth.check()});
   }
 
   toggleUserList (e) {
@@ -32,13 +34,15 @@ class App extends Component {
 
 
   render() {
+    let {user} = this.state;
     return (
       <div className="App">
         <Grid.Row>
-          <Topbar toggleUserList = {this.toggleUserList}></Topbar>
+          <Topbar toggleUserList={this.toggleUserList} user={user}></Topbar>
         </Grid.Row>
         <section id="content">
-          <Route exact path="/" render={(props) => <ChatScreen userListIsHidden={this.state.userListIsHidden} />} />
+          <Route exact path="/" render={(props) => <HomeScreen user={user}/>}/>
+          <Route path="/chat" render={(props) => <ChatScreen userListIsHidden={this.state.userListIsHidden} />} />
           <Route path="/login" component={LoginScreen} />
           <Route path="/signup" component={SignupScreen} />
         </section>
