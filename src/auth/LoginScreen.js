@@ -109,8 +109,8 @@ class LoginScreen extends Component {
           this.setState({successMsg: true});
           this.setState({successMsgContent: "GG WP"});
           setTimeout(() => {
-            this.props.history.replace("/");
-          }, 1000)
+            window.location.href ='/';
+          }, 500);
         }
       });
 
