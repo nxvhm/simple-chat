@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import { Redirect } from 'react-router-dom'
-
 import {Button, Dropdown, Menu, Icon} from 'semantic-ui-react';
 import Auth from './../services/Auth';
 
@@ -27,7 +25,9 @@ class Topbar extends Component {
       <Dropdown.Menu>
         <Dropdown.Item disabled={true}>User Profile</Dropdown.Item>
 
-        <Dropdown.Item> <Icon name="user"></Icon> {user.email}</Dropdown.Item>
+        <Dropdown.Item> <Icon name="user"></Icon> {user.username}</Dropdown.Item>
+        <Dropdown.Item> <Icon name="mail"></Icon> {user.email}</Dropdown.Item>
+
         <Dropdown.Item> <Icon name="setting"></Icon> Settings</Dropdown.Item>
         <Dropdown.Item> <Icon name="connectdevelop" color="green"></Icon> Online</Dropdown.Item>
         <Dropdown.Item onClick={this.logout}> <Icon name="power off"></Icon> Sign Out</Dropdown.Item>

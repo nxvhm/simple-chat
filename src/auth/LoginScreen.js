@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Button, Form, Message, Container } from 'semantic-ui-react'
+import { Button, Form, Message, Container, Segment, Header, Icon, Grid } from 'semantic-ui-react'
 import validator from 'validator';
 import Auth from './../services/Auth';
 
@@ -25,6 +25,7 @@ class LoginScreen extends Component {
       this.handleSubmit     = this.handleSubmit.bind(this);
       this.handleUserInput  = this.handleUserInput.bind(this);
       this.handleDismiss  = this.handleDismiss.bind(this);
+      this.goToSignup = this.goToSignup.bind(this);
 
     }
     componentWillMount() {
@@ -123,51 +124,67 @@ class LoginScreen extends Component {
       this.setState({state})
     }
 
+    renderLoginForm() {
+      return (
+      <Segment raised color='violet'>
+        <h1 className="text-center">Login</h1>
+        <Message name="successMsg" hidden={!this.state.successMsg}
+          onDismiss={this.handleDismiss}
+          success
+          header='Success !'
+          content={this.state.successMsgContent}
+        />
+        <Message name="warningMsg" hidden={!this.state.warning}
+          onDismiss={this.handleDismiss}
+          warning
+          header={this.state.warningMsgContent}
+          content='If you dont have an account, you can register from here!'
+        />
+        <Form onSubmit={this.handleSubmit}>
+          <Form.Input type="email"
+            name='email'
+            label='Email'
+            placeholder='Your Email'
+            value={this.state.email}
+            onChange={(event) => this.handleUserInput(event)}
+            error={!this.state.emailValid}
+          />
+
+          <Form.Input type="password"
+            name='password'
+            label='Your Password'
+            placeholder='Enter Your Password'
+            value={this.state.password}
+            onChange={(event) => this.handleUserInput(event)}
+            error={!this.state.passwordValid}
+          />
+          <div className='text-center'>
+            <Button basic color='green' type="submit" disabled={!this.isFormValid()}>Login</Button>
+            <Button basic color='purple' onClick={this.goToSignup}>Signup</Button>
+          </div>
+        </Form>
+      </Segment>
+      )
+    }
+
+    goToSignup(event) {
+      event.preventDefault();
+      this.props.history.push('/signup');
+    }
+
     render() {
       const { redirect } = this.state;
       if (redirect)
         return <Redirect to='/'></Redirect>
       // this.props.location.state.successMsgContent;
       return(
-        <Container>
-          <h1 className="text-center">Login</h1>
-
-            <Message name="successMsg" hidden={!this.state.successMsg}
-              onDismiss={this.handleDismiss}
-              success
-              header='Success !'
-              content={this.state.successMsgContent}
-            />
-
-            <Message name="warningMsg" hidden={!this.state.warning}
-              onDismiss={this.handleDismiss}
-              warning
-              header={this.state.warningMsgContent}
-              content='If you dont have an account, you can register from here!'
-            />
-            <Form onSubmit={this.handleSubmit}>
-
-                <Form.Input type="email"
-                  name='email'
-                  label='Email'
-                  placeholder='Your Email'
-                  value={this.state.email}
-                  onChange={(event) => this.handleUserInput(event)}
-                  error={!this.state.emailValid}
-                />
-
-                <Form.Input type="password"
-                  name='password'
-                  label='Your Password'
-                  placeholder='Enter Your Password'
-                  value={this.state.password}
-                  onChange={(event) => this.handleUserInput(event)}
-                  error={!this.state.passwordValid}
-                />
-
-                <Button size="huge" type="submit" disabled={!this.isFormValid()} primary>Login</Button>
-            </Form>
-        </Container>
+      <Grid container centered>
+        <Grid.Row className="mt40">
+        <Grid.Column  mobile={16} tablet={8} computer={6}>
+          {this.renderLoginForm()}
+        </Grid.Column>
+        </Grid.Row>
+      </Grid>
       )
     }
 }
