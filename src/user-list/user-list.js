@@ -24,8 +24,6 @@ class UserList extends Component {
   }
 
   render() {
-
-
     const ListItem = (props) => (
       <List.Item className="chat-user-item">
         <List.Content>

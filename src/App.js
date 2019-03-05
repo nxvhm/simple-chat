@@ -40,12 +40,10 @@ class App extends Component {
         <Grid.Row>
           <Topbar toggleUserList={this.toggleUserList} user={user}></Topbar>
         </Grid.Row>
-        <section id="content">
           <Route exact path="/" render={(props) => <HomeScreen user={user}/>}/>
           <Route path="/chat" render={(props) => <ChatScreen userListIsHidden={this.state.userListIsHidden} />} />
           <Route path="/login" component={LoginScreen} />
           <Route path="/signup" component={SignupScreen} />
-        </section>
       </div>
     );
   }

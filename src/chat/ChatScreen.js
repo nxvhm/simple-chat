@@ -14,14 +14,17 @@ class ChatScreen extends Component {
 
     render() {
       return(
+        <section id="content">
+
         <div className="chat-screen-container">
-          
+
           <ChatPane></ChatPane>
 
           <div className="user-list-container">
             <UserList isHidden={this.props.userListIsHidden}></UserList>
           </div>
-        </div>        
+        </div>
+        </section>
       )
     }
 }
