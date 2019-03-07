@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 
 import {Route} from 'react-router-dom';
 import { Grid } from 'semantic-ui-react'
-import Topbar from './topbar/topbar';
+import Topbar from './components/Topbar/Topbar';
 import ChatScreen from './chat/ChatScreen';
-import LoginScreen from './auth/LoginScreen';
-import SignupScreen from './auth/SignupScreen';
+import LoginScreen from './components/Auth/LoginScreen';
+import SignupScreen from './components/Auth/SignupScreen';
 import HomeScreen from './components/HomeScreen/HomeScreen';
 import Auth from './services/Auth';
 
