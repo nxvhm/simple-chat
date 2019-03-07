@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Dropdown, Menu, Icon} from 'semantic-ui-react';
-import Auth from './../services/Auth';
+import Auth from './../../services/Auth';
 
 class Topbar extends Component {
 

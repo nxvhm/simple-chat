@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Container, Form, Button } from 'semantic-ui-react'
+import { Container, Form, Button, Segment } from 'semantic-ui-react'
 import validator from 'validator';
 import axios from 'axios';
 
@@ -17,7 +17,7 @@ class SignupScreen extends Component {
       passwordConfirm: '',
       username: '',
       gender: 1,
-      
+
       // Input Validation States
       emailValid: false,
       passwordValid: false,
@@ -82,10 +82,10 @@ class SignupScreen extends Component {
 
   // Send signup request if form is valid
   handleSubmit() {
-    
+
     // e.preventDefault();
 
-    let apiUrl = process.env.REACT_APP_API_URI; 
+    let apiUrl = process.env.REACT_APP_API_URI;
     if (this.isFormValid()) {
       var self = this;
       axios.post(`${apiUrl}/signup`, {
@@ -98,17 +98,17 @@ class SignupScreen extends Component {
           let errors = response.data.errors;
 
           Object.keys(errors).map(key => {
-            
+
             let field = key+'Valid';
-            
+
             let formErrors = self.state.formErrors;
             formErrors[key] = errors[key].message;
 
-            self.setState({
+            return self.setState({
               [field]: false,
              formErrors
             });
-            
+
           });
         } else if (response.data.success) {
           self.setState({loginRedirect: true});
@@ -127,49 +127,49 @@ class SignupScreen extends Component {
       return <Redirect to={{
         pathname: '/login',
         state: {successMsg: true, successMsgContent: 'Your registration was successfull, you can login in your account now'}
-      }} />;  
+      }} />;
     }
 
     return(
       <Container>
         <h1 className="text-center">Create  Account</h1>
 
-      
+
         <Form onSubmit={this.handleSubmit}>
 
-          <Form.Input type="text" 
-            name='username' 
-            label={'Username '+this.state.formErrors.username} 
-            placeholder='Your Username' 
-            value={this.state.username} 
+          <Form.Input type="text"
+            name='username'
+            label={'Username '+this.state.formErrors.username}
+            placeholder='Your Username'
+            value={this.state.username}
             onChange={(event) => this.handleUserInput(event)}
             error={!this.state.usernameValid}
           />
 
-          <Form.Input type='email' 
-            name='email' 
-            label={'Email Address '+ this.state.formErrors.email} 
-            placeholder='Your Email' 
-            value={this.state.email}  
+          <Form.Input type='email'
+            name='email'
+            label={'Email Address '+ this.state.formErrors.email}
+            placeholder='Your Email'
+            value={this.state.email}
             onChange={(event) => this.handleUserInput(event)}
             error={!this.state.emailValid}
           />
 
           <Form.Input type='password'
-            name='password' 
-            label={'Password '+ this.state.formErrors.password} 
-            placeholder='Your Password' 
-            value={this.state.password} 
+            name='password'
+            label={'Password '+ this.state.formErrors.password}
+            placeholder='Your Password'
+            value={this.state.password}
             onChange={(event) => this.handleUserInput(event)}
-            error={!this.state.passwordValid}              
+            error={!this.state.passwordValid}
           />
 
           {/* Repeat Password */}
           <Form.Input type='password'
-            name='passwordConfirm' 
-            label={'Repeat Password ' + this.state.formErrors.passwordConfirm} 
-            placeholder='Repeat your Password' 
-            value={this.state.passwordConfirm} 
+            name='passwordConfirm'
+            label={'Repeat Password ' + this.state.formErrors.passwordConfirm}
+            placeholder='Repeat your Password'
+            value={this.state.passwordConfirm}
             onChange={(event) => this.handleUserInput(event)}
             error={!this.state.passwordConfirmValid}
           />

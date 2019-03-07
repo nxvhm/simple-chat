@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ChatPane from './ChatPane';
-import UserList from './../user-list/user-list';
+import UserList from './../components/UserList/UserList';
 
 /**
  * Chat Screen Component with ChatPane for messages

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Button, Form, Message, Container, Segment, Header, Icon, Grid } from 'semantic-ui-react'
+import { Button, Form, Message, Container, Segment, Grid } from 'semantic-ui-react'
 import validator from 'validator';
-import Auth from './../services/Auth';
+import Auth from './../../services/Auth';
 
 class LoginScreen extends Component {
     constructor(props) {
