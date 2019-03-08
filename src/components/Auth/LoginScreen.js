@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Button, Form, Message, Container, Segment, Grid } from 'semantic-ui-react'
+import { Button, Form, Message, Segment, Grid } from 'semantic-ui-react'
 import validator from 'validator';
 import Auth from './../../services/Auth';
 

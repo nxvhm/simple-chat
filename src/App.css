@@ -216,3 +216,12 @@ section#content {
     /* bottom: 100px; */
   }
 }
+
+
+.avatar-option {
+  cursor: pointer;
+}
+.avatar-option.selected {
+  border: 5px solid green;
+  border-radius: 50%;
+}

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Redirect } from 'react-router-dom'
 import { Button, Segment, Grid, Card, Image, Item, Icon, Divider } from 'semantic-ui-react'
+import AvatarsModal from '../Modals/Avatars'
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -8,6 +9,7 @@ export default class HomeScreen extends Component {
     this.state = {
       user: props.user || false
     }
+
   }
 
   render() {
@@ -15,7 +17,8 @@ export default class HomeScreen extends Component {
     let user = this.state.user;
     if (!user)
       return <Redirect to='/login'></Redirect>
-    const TestCard = (pros) => (
+
+    const TestCard = (props) => (
       <Card>
         <Card.Content>
           <Image floated='right' size='mini' src='https://react.semantic-ui.com/images/avatar/small/jenny.jpg' />
@@ -35,6 +38,9 @@ export default class HomeScreen extends Component {
 
     return(
       <Grid container stackable>
+        {/* Call avatar modal if no avatar available for the user */}
+        <AvatarsModal isOpen={!new Boolean(user.avatar).valueOf()}></AvatarsModal>
+
         <Grid.Row className="mt40">
           {/* Online User Column */}
           <Grid.Column mobile={16} tablet={8} computer={6}>
