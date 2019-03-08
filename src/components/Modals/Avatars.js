@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
-import { Button, Header, Image, Modal, Icon, Divider } from 'semantic-ui-react'
+import { Button, Image, Modal, Icon  } from 'semantic-ui-react'
 import axios from 'axios';
 
 
 export default class Avatars extends Component {
   constructor(props) {
     super(props);
+    // If user avatar is empty str, then set isOpen to true
+    let isOpen = props.user && props.user.avatar === ""
+      ? true
+      : false;
+
     this.state = {
-      isOpen: props.isOpen,
+      isOpen,
       avatars: [],
+      user: props.user || null,
       selectedAvatar: null
     }
 
@@ -47,7 +53,21 @@ export default class Avatars extends Component {
    * Save Selected avatar to db
    */
   saveSelected() {
-    this.setState({isOpen: false});
+
+    let apiUrl = process.env.REACT_APP_API_URI;
+    let {user, selectedAvatar} = this.state;
+
+    if (!selectedAvatar) return false;
+    axios.post(`${apiUrl}/user/save-avatar`, {
+      userId: user._id,
+      avatar: selectedAvatar
+    }).then(res => {
+      this.setState({isOpen: false});
+      console.log(res);
+    }).catch(err => {
+      this.setState({isOpen: false});
+      console.log(err);
+    });
   }
 
   render() {
@@ -60,7 +80,7 @@ export default class Avatars extends Component {
       <Modal.Content>
         <Modal.Description>
             {avatars.slice(0, 80).map(src =>
-              <Image className={this.state.selectedAvatar == src ? 'avatar-option selected' : 'avatar-option'} onClick={(e) => this.selectAvatar(src, e)} size='tiny' floated='left' src={src} key={src} />
+              <Image className={this.state.selectedAvatar === src ? 'avatar-option selected' : 'avatar-option'} onClick={(e) => this.selectAvatar(src, e)} size='tiny' floated='left' src={src} key={src} />
             )}
         </Modal.Description>
         <Modal.Actions >

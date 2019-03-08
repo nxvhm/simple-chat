@@ -11,8 +11,18 @@ class Topbar extends Component {
     }
 
     this.logout = this.logout.bind(this);
+    this.callAvatarsModal = this.callAvatarsModal.bind(this);
   }
+  /**
+   * Call avatar modal
+   */
+  callAvatarsModal() {
 
+  }
+  /**
+   * Genearte user dropdown markup
+   * @param {Object} Current logged in used
+   */
   userDropDown(user){
     if (user) {
 
@@ -27,8 +37,8 @@ class Topbar extends Component {
 
         <Dropdown.Item> <Icon name="user"></Icon> {user.username}</Dropdown.Item>
         <Dropdown.Item> <Icon name="mail"></Icon> {user.email}</Dropdown.Item>
-
-        <Dropdown.Item> <Icon name="setting"></Icon> Settings</Dropdown.Item>
+        <Dropdown.Item> <Icon name="image"></Icon> Avatar </Dropdown.Item>
+        <Dropdown.Item onClick={this.callAvatarsModal}> <Icon name="setting"></Icon> Settings</Dropdown.Item>
         <Dropdown.Item> <Icon name="connectdevelop" color="green"></Icon> Online</Dropdown.Item>
         <Dropdown.Item onClick={this.logout}> <Icon name="power off"></Icon> Sign Out</Dropdown.Item>
       </Dropdown.Menu>
@@ -37,6 +47,9 @@ class Topbar extends Component {
     }
   }
 
+  /**
+   * Delete jwt token from local storage and redirect to login
+   */
   logout() {
     Auth.logout();
     window.location.href ='/login';
