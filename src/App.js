@@ -11,6 +11,7 @@ import Auth from './services/Auth';
 import AvatarsModal from './components/Modals/Avatars'
 
 import './App.css';
+const axios = require('axios');
 
 class App extends Component {
 
@@ -30,6 +31,9 @@ class App extends Component {
     let showAvatarsModal = user && user.avatar === ""
       ? true
       : false;
+    if (user) {
+      axios.defaults.headers.common = {'Authorization': `Bearer ${Auth.getToken()}`}
+    }
     this.setState({user, showAvatarsModal});
   }
 
