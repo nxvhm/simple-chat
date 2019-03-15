@@ -17,6 +17,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       userListIsHidden: false,
       showAvatarsModal: false,
@@ -24,22 +25,36 @@ class App extends Component {
     };
 
     this.toggleUserList = this.toggleUserList.bind(this);
+    this.toggleAvatarsModal = this.toggleAvatarsModal.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let user = Auth.check();
-    let showAvatarsModal = user && user.avatar === ""
-      ? true
-      : false;
+
     if (user) {
+
+      let showAvatarsModal = user && user.avatar === ""
+        ? true
+        : false;
+
       axios.defaults.headers.common = {'Authorization': `Bearer ${Auth.getToken()}`}
+
+      this.setState({user: user, showAvatarsModal: showAvatarsModal}, () => {
+        console.log(this.state);
+      });
     }
-    this.setState({user, showAvatarsModal});
+
   }
+
 
   toggleUserList (e) {
     let userListState = !this.state.userListIsHidden;
     this.setState({userListIsHidden: userListState});
+  }
+
+  toggleAvatarsModal() {
+    this.setState({showAvatarsModal: !this.state.showAvatarsModal});
+    console.log(this.state);
   }
 
 
@@ -48,10 +63,10 @@ class App extends Component {
     return (
       <div className="App">
         {/* Call avatar modal if no avatar available for the user */}
-        <AvatarsModal user={user} isOpen={showAvatarsModal}></AvatarsModal>
+        <AvatarsModal user={user} toggleAvatarsModal={this.toggleAvatarsModal} isOpen={showAvatarsModal}></AvatarsModal>
 
         <Grid.Row>
-          <Topbar toggleUserList={this.toggleUserList} user={user}></Topbar>
+          <Topbar toggleUserList={this.toggleUserList} toggleAvatarsModal={this.toggleAvatarsModal} user={user}></Topbar>
         </Grid.Row>
           <Route exact path="/" render={(props) => <HomeScreen user={user}/>}/>
           <Route path="/chat" render={(props) => <ChatScreen userListIsHidden={this.state.userListIsHidden} />} />

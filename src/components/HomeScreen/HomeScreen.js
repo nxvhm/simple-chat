@@ -5,15 +5,11 @@ import { Button, Segment, Grid, Card, Image, Item, Icon, Divider } from 'semanti
 export default class HomeScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      user: props.user || false
-    }
-
   }
 
   render() {
 
-    let user = this.state.user;
+    let user = this.props.user;
     if (!user)
       return <Redirect to='/login'></Redirect>
 
