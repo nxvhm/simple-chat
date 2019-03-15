@@ -44,7 +44,6 @@ class LoginScreen extends Component {
     componentDidMount() {
       if (Auth.check()) {
         this.setState({redirect: true});
-        console.log(Auth.check(), this.state.redirect);
       }
     }
 

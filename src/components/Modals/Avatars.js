@@ -2,23 +2,15 @@ import React, { Component } from 'react';
 import { Button, Image, Modal, Icon  } from 'semantic-ui-react'
 import axios from 'axios';
 
-
 export default class Avatars extends Component {
   constructor(props) {
     super(props);
-    // If user avatar is empty str, then set isOpen to true
-    let isOpen = props.user && props.user.avatar === ""
-      ? true
-      : false;
 
     this.state = {
-      isOpen,
       avatars: [],
-      user: props.user || null,
       selectedAvatar: null
     }
 
-    this.toggleIsOpen = this.toggleIsOpen.bind(this);
     this.selectAvatar = this.selectAvatar.bind(this);
     this.saveSelected = this.saveSelected.bind(this);
   }
@@ -31,14 +23,9 @@ export default class Avatars extends Component {
     axios.get(`${apiUrl}/avatars`).then(result => {
       this.setState({avatars: result.data});
     }).catch(err => {
-      console.error(err);
       this.setState({isOpen: false});
     });
 
-  }
-
-  toggleIsOpen() {
-    this.setState({isOpen: !this.state.isOpen});
   }
 
   /**
@@ -55,45 +42,42 @@ export default class Avatars extends Component {
   saveSelected() {
 
     let apiUrl = process.env.REACT_APP_API_URI;
-    let {user, selectedAvatar} = this.state;
+    let user = this.props.user;
+    let selectedAvatar = this.state.selectedAvatar;
 
-    if (!selectedAvatar) return false;
+    if (!selectedAvatar || !user) return false;
+
     axios.post(`${apiUrl}/user/save-avatar`, {
       userId: user._id,
       avatar: selectedAvatar
     }).then(res => {
-      this.setState({isOpen: false});
-      console.log(res);
+      this.props.toggleAvatarsModal();
     }).catch(err => {
-      this.setState({isOpen: false});
-      console.log(err);
+      this.props.toggleAvatarsModal();
     });
   }
 
   render() {
 
-    let {isOpen, avatars} = this.state;
+    let {avatars} = this.state;
 
     return (
-      <Modal open={isOpen}>
-      <Modal.Header>Select Avatar Image</Modal.Header>
+      <Modal open={this.props.isOpen}>
+      <Modal.Header>
+        Select Avatar Image
+        <Button color='green' floated="right" onClick={this.saveSelected}>
+          <Icon name='checkmark' /> Save
+        </Button>
+        <Button basic color='green' floated="right" onClick={this.props.toggleAvatarsModal}>
+          <Icon name='remove'/> Cancel
+        </Button>
+      </Modal.Header>
       <Modal.Content>
         <Modal.Description>
-            {avatars.slice(0, 80).map(src =>
-              <Image className={this.state.selectedAvatar === src ? 'avatar-option selected' : 'avatar-option'} onClick={(e) => this.selectAvatar(src, e)} size='tiny' floated='left' src={src} key={src} />
-            )}
+          {avatars.slice(0, 80).map(src =>
+            <Image className={this.state.selectedAvatar === src ? 'avatar-option selected' : 'avatar-option'} onClick={(e) => this.selectAvatar(src, e)} size='tiny' floated='left' src={src} key={src} />
+          )}
         </Modal.Description>
-        <Modal.Actions >
-
-          <Button basic color='green' floated="left" onClick={this.saveSelected}>
-            <Icon name='checkmark' /> Save
-          </Button>
-
-          <Button color='green' floated="left" onClick={this.toggleIsOpen}>
-            <Icon name='remove'/> Cancel
-          </Button>
-        </Modal.Actions>
-
       </Modal.Content>
     </Modal>
     );
