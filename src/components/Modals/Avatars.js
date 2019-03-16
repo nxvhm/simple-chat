@@ -51,6 +51,11 @@ export default class Avatars extends Component {
       userId: user._id,
       avatar: selectedAvatar
     }).then(res => {
+
+      if (res.data && res.data.token) {
+        this.props.updateUserToken(res.data.token);
+      }
+
       this.props.toggleAvatarsModal();
     }).catch(err => {
       this.props.toggleAvatarsModal();

@@ -26,6 +26,8 @@ class App extends Component {
 
     this.toggleUserList = this.toggleUserList.bind(this);
     this.toggleAvatarsModal = this.toggleAvatarsModal.bind(this);
+    this.updateUserToken = this.updateUserToken.bind(this);
+
   }
 
   componentDidMount() {
@@ -45,33 +47,59 @@ class App extends Component {
     }
 
   }
+  /**
+   * Update User data
+   * @param   {String}  token  JWT Token
+   */
+  updateUserToken(token) {
+    Auth.setToken(token);
 
+    let user = Auth.check();
+
+    if (user) {
+      this.setState({user});
+    }
+  }
 
   toggleUserList (e) {
     let userListState = !this.state.userListIsHidden;
     this.setState({userListIsHidden: userListState});
   }
-
+  /**
+   * Toggle show avatars modal flag
+   */
   toggleAvatarsModal() {
     this.setState({showAvatarsModal: !this.state.showAvatarsModal});
     console.log(this.state);
   }
 
-
   render() {
     let {user, showAvatarsModal} = this.state;
     return (
       <div className="App">
+
         {/* Call avatar modal if no avatar available for the user */}
-        <AvatarsModal user={user} toggleAvatarsModal={this.toggleAvatarsModal} isOpen={showAvatarsModal}></AvatarsModal>
+        <AvatarsModal user={user}
+          toggleAvatarsModal={this.toggleAvatarsModal}
+          isOpen={showAvatarsModal}
+          updateUserToken={this.updateUserToken}>
+        </AvatarsModal>
 
         <Grid.Row>
-          <Topbar toggleUserList={this.toggleUserList} toggleAvatarsModal={this.toggleAvatarsModal} user={user}></Topbar>
+
+          <Topbar
+            toggleUserList={this.toggleUserList}
+            toggleAvatarsModal={this.toggleAvatarsModal}
+            user={user}>
+          </Topbar>
+
         </Grid.Row>
-          <Route exact path="/" render={(props) => <HomeScreen user={user}/>}/>
-          <Route path="/chat" render={(props) => <ChatScreen userListIsHidden={this.state.userListIsHidden} />} />
-          <Route path="/login" component={LoginScreen} />
-          <Route path="/signup" component={SignupScreen} />
+
+        <Route exact path="/" render={(props) => <HomeScreen user={user}/>}/>
+        <Route path="/chat" render={(props) => <ChatScreen userListIsHidden={this.state.userListIsHidden} />} />
+        <Route path="/login" component={LoginScreen} />
+        <Route path="/signup" component={SignupScreen} />
+
       </div>
     );
   }

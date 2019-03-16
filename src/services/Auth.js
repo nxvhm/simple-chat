@@ -3,10 +3,20 @@ import decode from "jwt-decode";
 
 const Auth = {
 
+  /**
+   * Save token in localstorage and set Authoraization header for it
+   * @param   {String}  token  VALID JWT token
+   * @return  {void}
+   */
   setToken: (token) => {
+    axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
     localStorage.setItem('token', token);
   },
 
+  /**
+   * Return the curernt stored jwt token if availablr
+   * @return  {mixed}  String if token exists or false
+   */
   getToken: () => {
     return localStorage.getItem('token');
   },
@@ -48,7 +58,6 @@ const Auth = {
 
     try {
       let userData = decode(token);
-
       return (userData.exp > Date.now() / 1000) ? userData : false;
 
     } catch (error) {
@@ -57,6 +66,7 @@ const Auth = {
     }
 
   },
+
   /**
    * Get User Data
    * @param void
