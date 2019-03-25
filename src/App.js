@@ -33,14 +33,6 @@ class App extends Component {
 
   componentDidMount() {
 
-    if (!SocketClient.getConnection()) {
-
-      SocketClient.connect(
-        process.env.REACT_APP_SOCKET_URL,
-        process.env.REACT_APP_SOCKET_PORT
-      );
-    }
-
     let user = Auth.check();
 
     if (user) {
@@ -54,6 +46,22 @@ class App extends Component {
       this.setState({user: user, showAvatarsModal: showAvatarsModal}, () => {
         console.log(this.state);
       });
+
+      //Initialize socket connection
+      if (!SocketClient.getConnection()) {
+
+        SocketClient.connect(
+          process.env.REACT_APP_SOCKET_URL,
+          process.env.REACT_APP_SOCKET_PORT,
+          user._id
+        );
+
+        setTimeout(() => {
+          console.log(SocketClient.getConnection());
+        }, 1000);
+      }
+
+
     }
 
   }

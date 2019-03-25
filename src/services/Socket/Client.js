@@ -25,10 +25,10 @@ const SocketClient = {
    * @param   {String} url WebSocket server domain
    * @param   {Int}  port   WebSocket Server Port
    */
-  connect: (url, port) => {
-    SocketClient.connection = new WebSocket(`ws://${url}:${port}`);
+  connect: (url, port, uid) => {
+    SocketClient.connection = new WebSocket(`ws://${url}:${port}?uid=${uid}`);
 
-    console.log(url, port, SocketClient.connection);
+    console.log(url, port, SocketClient.connection, uid);
   }
 }
 
