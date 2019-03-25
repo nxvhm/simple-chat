@@ -8,6 +8,7 @@ import LoginScreen from './components/Auth/LoginScreen';
 import SignupScreen from './components/Auth/SignupScreen';
 import HomeScreen from './components/HomeScreen/HomeScreen';
 import Auth from './services/Auth';
+import SocketClient from './services/Socket/Client';
 import AvatarsModal from './components/Modals/Avatars'
 
 import './App.css';
@@ -31,6 +32,15 @@ class App extends Component {
   }
 
   componentDidMount() {
+
+    if (!SocketClient.getConnection()) {
+
+      SocketClient.connect(
+        process.env.REACT_APP_SOCKET_URL,
+        process.env.REACT_APP_SOCKET_PORT
+      );
+    }
+
     let user = Auth.check();
 
     if (user) {
