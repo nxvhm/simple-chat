@@ -57,6 +57,8 @@ class Topbar extends Component {
     }
   }
 
+
+
   /**
    * Delete jwt token from local storage and redirect to login
    */
@@ -70,6 +72,12 @@ class Topbar extends Component {
       <Menu className='bg-blue topnav'>
 
         {this.userDropDown(this.props.user)}
+
+        <Menu.Item>
+          <Button toggle active={this.props.connectedToServer} onClick={this.props.toggleServerConnection}>
+            {this.props.connectedToServer ? "ONLINE" : "OFFLINE"}
+          </Button>
+        </Menu.Item>
 
         <Menu.Item className="brand">
             <h1>Chatty</h1>

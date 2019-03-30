@@ -22,13 +22,55 @@ class App extends Component {
     this.state = {
       userListIsHidden: false,
       showAvatarsModal: false,
-      user: false
+      user: false,
+      connectedToServer: false,
     };
 
     this.toggleUserList = this.toggleUserList.bind(this);
     this.toggleAvatarsModal = this.toggleAvatarsModal.bind(this);
     this.updateUserToken = this.updateUserToken.bind(this);
+    this.connectToServer = this.connectToServer.bind(this);
+    this.toggleServerConnection = this.toggleServerConnection.bind(this);
 
+  }
+
+  /**
+   * Initialize Connection to the WebSocket server
+   * @return  {void}
+   */
+  connectToServer() {
+    //Initialize socket connection
+    let user = this.state.user;
+
+    if (user && !SocketClient.isConnected()) {
+
+      SocketClient.connect(
+        process.env.REACT_APP_SOCKET_URL,
+        process.env.REACT_APP_SOCKET_PORT,
+        user._id
+      , () => {
+        this.setState({connectedToServer: SocketClient.isConnected() })
+      });
+
+      setTimeout(() => {
+        console.log(SocketClient.getConnection());
+      }, 1000);
+    } else {
+      this.setState({connectedToServer: false })
+    }
+  }
+
+  /**
+   * Connect/Disconnet from ws server
+   * @return  {void}
+   */
+  toggleServerConnection() {
+    if (this.state.connectedToServer) {
+      SocketClient.getConnection().close(1000);
+      this.setState({connectedToServer: false})
+    } else {
+      this.connectToServer();
+    }
   }
 
   componentDidMount() {
@@ -44,26 +86,11 @@ class App extends Component {
       axios.defaults.headers.common = {'Authorization': `Bearer ${Auth.getToken()}`}
 
       this.setState({user: user, showAvatarsModal: showAvatarsModal}, () => {
-        console.log(this.state);
+        //Initialize socket connection after user is set in state
+        this.connectToServer();
       });
 
-      //Initialize socket connection
-      if (!SocketClient.getConnection()) {
-
-        SocketClient.connect(
-          process.env.REACT_APP_SOCKET_URL,
-          process.env.REACT_APP_SOCKET_PORT,
-          user._id
-        );
-
-        setTimeout(() => {
-          console.log(SocketClient.getConnection());
-        }, 1000);
-      }
-
-
     }
-
   }
   /**
    * Update User data
@@ -92,7 +119,7 @@ class App extends Component {
   }
 
   render() {
-    let {user, showAvatarsModal} = this.state;
+    let {user, showAvatarsModal, connectedToServer} = this.state;
     return (
       <div className="App">
 
@@ -108,6 +135,8 @@ class App extends Component {
           <Topbar
             toggleUserList={this.toggleUserList}
             toggleAvatarsModal={this.toggleAvatarsModal}
+            connectedToServer={connectedToServer}
+            toggleServerConnection={this.toggleServerConnection}
             user={user}>
           </Topbar>
 
