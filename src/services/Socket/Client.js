@@ -22,16 +22,24 @@ const SocketClient = {
 
   /**
    * Connect to socket Server
-   * @param   {String} url WebSocket server domain
-   * @param   {Int}  port   WebSocket Server Port
+   * @param {String}  url   WebSocket server domain
+   * @param {Int}     port  WebSocket Server Port
+   * @param {String}  uid   User ID connecting to the socket
+   * @callback cb The function to execute on successfull connection or error/interuption.
    */
   connect: (url, port, uid, cb = null) => {
     SocketClient.connection = new WebSocket(`ws://${url}:${port}?uid=${uid}`);
 
+    //If connection throws error execute the provided
+    SocketClient.connection.onerror = () => {
+      // Some logic...
+      if (cb) cb();
+    }
+    // On connection open execute the provided
     SocketClient.connection.onopen = () => {
       // Some logic here ??
-      cb();
-    }
+      if (cb) cb();
+    };
 
   }
 }
