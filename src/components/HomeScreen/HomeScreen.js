@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Redirect } from 'react-router-dom'
-import { Button, Segment, Grid, Card, Image, Item, Icon, Divider } from 'semantic-ui-react'
+import { Button, Segment, Grid, Card, Image, Icon, Divider } from 'semantic-ui-react'
+import OnlineUsers from '../Widgets/OnlineUsers';
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -37,34 +38,9 @@ export default class HomeScreen extends Component {
         <Grid.Row className="mt40">
           {/* Online User Column */}
           <Grid.Column mobile={16} tablet={8} computer={6}>
-            <Segment>
-              <h3>Users Online</h3>
-              <Item.Group>
-                <Item>
-                  <Item.Image size='mini' verticalAlign='middle' src='https://react.semantic-ui.com/images/avatar/large/jenny.jpg' />
-                  <Item.Content>
-                    <Item.Header>
-                      <Icon name='favorite' />
-                      Veronika Ossi
-                    </Item.Header>
-                    <Button basic size='mini' floated='right' color='green' >CHAT</Button>
-                  </Item.Content>
-                </Item>
-                <Item>
-                  <Item.Image size='mini' src='https://react.semantic-ui.com/images/avatar/large/justen.jpg' />
-
-                  <Item.Content>
-                    <Item.Header>
-                      <Icon name='favorite' />
-                      Justen Kitsune
-                    </Item.Header>
-                    <Button basic size='mini' floated='right' color='green' >CHAT</Button>
-                  </Item.Content>
-                </Item>
-              </Item.Group>
-
-            </Segment>
+            <OnlineUsers connectedToServer={this.props.connectedToServer}></OnlineUsers>
           </Grid.Column>
+
           {/* Chat rooms Column */}
           <Grid.Column mobile={16} tablet={8} computer={10}>
             <Segment>

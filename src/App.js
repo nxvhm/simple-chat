@@ -49,12 +49,12 @@ class App extends Component {
         process.env.REACT_APP_SOCKET_PORT,
         user._id
       , () => {
-        this.setState({connectedToServer: SocketClient.isConnected() })
+        let connectedToServer = SocketClient.isConnected()
+        this.setState({connectedToServer});
       });
-
-      setTimeout(() => {
-        console.log(SocketClient.getConnection());
-      }, 1000);
+      // setTimeout(() => {
+      //   console.log(SocketClient.getConnection());
+      // }, 1000);
     } else {
       this.setState({connectedToServer: false })
     }
@@ -106,7 +106,7 @@ class App extends Component {
     }
   }
 
-  toggleUserList (e) {
+  toggleUserList () {
     let userListState = !this.state.userListIsHidden;
     this.setState({userListIsHidden: userListState});
   }
@@ -142,7 +142,7 @@ class App extends Component {
 
         </Grid.Row>
 
-        <Route exact path="/" render={(props) => <HomeScreen user={user}/>}/>
+        <Route exact path="/" render={(props) => <HomeScreen user={user} connectedToServer={this.state.connectedToServer}/>}/>
         <Route path="/chat" render={(props) => <ChatScreen userListIsHidden={this.state.userListIsHidden} />} />
         <Route path="/login" component={LoginScreen} />
         <Route path="/signup" component={SignupScreen} />

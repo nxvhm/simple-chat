@@ -1,3 +1,5 @@
+import { Socket } from "net";
+
 const SocketClient = {
 
   connection: null,
@@ -41,6 +43,40 @@ const SocketClient = {
       if (cb) cb();
     };
 
+    SocketClient.connection.onmessage = SocketClient.incomingMessage;
+
+    // SocketClient.connection.addEventListener('new-user-online', function(e) {
+    //   console.log(console.log('new-user-online', e));
+    // });
+  },
+
+  /**
+   * On WebSocket message handler
+   * @param   {object}  payload
+   */
+  incomingMessage: (payload) => {
+    try {
+      let data = JSON.parse(payload.data);
+
+      console.log('WsMsg', data);
+      if (data.type == 'event') {
+        return SocketClient.dispatchEvent(data.name);
+      }
+
+    } catch (error) {
+      console.error(error.message);
+      return false;
+    }
+  },
+
+  dispatchEvent: (name, detail = null) => {
+    if (SocketClient.isConnected()) {
+
+      let socketEvent = (detail)
+        ? new CustomEvent(name, {detail})
+        : new Event(name);
+      SocketClient.getConnection().dispatchEvent(socketEvent);
+    }
   }
 }
 
