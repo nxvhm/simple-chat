@@ -1,5 +1,3 @@
-import { Socket } from "net";
-
 const SocketClient = {
 
   connection: null,
@@ -59,7 +57,7 @@ const SocketClient = {
       let data = JSON.parse(payload.data);
 
       console.log('WsMsg', data);
-      if (data.type == 'event') {
+      if (data.type === 'event') {
         return SocketClient.dispatchEvent(data.name);
       }
 

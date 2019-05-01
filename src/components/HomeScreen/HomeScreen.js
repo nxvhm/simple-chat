@@ -4,9 +4,6 @@ import { Button, Segment, Grid, Card, Image, Icon, Divider } from 'semantic-ui-r
 import OnlineUsers from '../Widgets/OnlineUsers';
 
 export default class HomeScreen extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
 
