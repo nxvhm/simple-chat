@@ -143,7 +143,7 @@ class App extends Component {
         </Grid.Row>
 
         <Route exact path="/" render={(props) => <HomeScreen user={user} connectedToServer={this.state.connectedToServer}/>}/>
-        <Route path="/chat" render={(props) => <ChatScreen userListIsHidden={this.state.userListIsHidden} />} />
+        <Route path="/chat/:userId" render={(props) => <ChatScreen userListIsHidden={this.state.userListIsHidden} />} />
         <Route path="/login" component={LoginScreen} />
         <Route path="/signup" component={SignupScreen} />
 

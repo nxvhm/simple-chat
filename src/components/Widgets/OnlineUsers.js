@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Segment, Item, Icon } from 'semantic-ui-react'
+import { Link } from 'react-router-dom';
 import Users from '../../services/Users'
 import SocketClient from '../../services/Socket/Client'
 
@@ -54,7 +55,9 @@ export default class OnlineUsers extends Component {
         <Item.Content>
           <Item.Header>
             <Icon name='favorite' />{props.user.username}</Item.Header>
-          <Button basic size='mini' floated='right' color='green' >CHAT</Button>
+            <Link to={`/chat/${props.user._id}`}>
+              <Button basic size='mini' floated='right' color='green' >CHAT</Button>
+            </Link>
         </Item.Content>
       </Item>
     )
