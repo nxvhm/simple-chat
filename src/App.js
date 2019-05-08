@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import {Route} from 'react-router-dom';
 import { Grid } from 'semantic-ui-react'
 import Topbar from './components/Topbar/Topbar';
-import ChatScreen from './chat/ChatScreen';
+import ChatScreen from './components/chat/ChatScreen';
 import LoginScreen from './components/Auth/LoginScreen';
 import SignupScreen from './components/Auth/SignupScreen';
 import HomeScreen from './components/HomeScreen/HomeScreen';
