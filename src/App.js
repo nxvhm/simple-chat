@@ -20,7 +20,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      userListIsHidden: false,
+      userListIsHidden: true,
       showAvatarsModal: false,
       user: false,
       connectedToServer: false,
@@ -137,13 +137,23 @@ class App extends Component {
             toggleAvatarsModal={this.toggleAvatarsModal}
             connectedToServer={connectedToServer}
             toggleServerConnection={this.toggleServerConnection}
+            showHomeBtn={false}
             user={user}>
           </Topbar>
 
         </Grid.Row>
 
-        <Route exact path="/" render={(props) => <HomeScreen user={user} connectedToServer={this.state.connectedToServer}/>}/>
-        <Route path="/chat/:userId" render={(props) => <ChatScreen userListIsHidden={this.state.userListIsHidden} />} />
+        <Route exact path="/" render={(props) =>
+          <HomeScreen user={user} connectedToServer={connectedToServer}/>}
+        />
+
+        <Route path="/chat/:userId" render={(props) =>
+          <ChatScreen
+            userListIsHidden={this.state.userListIsHidden}
+            userId={props.match.params.userId}
+          />
+        }/>
+
         <Route path="/login" component={LoginScreen} />
         <Route path="/signup" component={SignupScreen} />
 
