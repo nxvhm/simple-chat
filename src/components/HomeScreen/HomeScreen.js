@@ -35,7 +35,7 @@ export default class HomeScreen extends Component {
         <Grid.Row className="mt40">
           {/* Online User Column */}
           <Grid.Column mobile={16} tablet={8} computer={6}>
-            <OnlineUsers connectedToServer={this.props.connectedToServer}></OnlineUsers>
+            <OnlineUsers user={user} connectedToServer={this.props.connectedToServer}></OnlineUsers>
           </Grid.Column>
 
           {/* Chat rooms Column */}
