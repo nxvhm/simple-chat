@@ -47,7 +47,9 @@ export default class OnlineUsers extends Component {
 
 
   render() {
-    this.attachOnlineUserHandler()
+    this.attachOnlineUserHandler();
+
+    const currentUser = this.props.user;
 
     const UserItem = (props) => (
       <Item>
@@ -55,7 +57,12 @@ export default class OnlineUsers extends Component {
         <Item.Content>
           <Item.Header>
             <Icon name='favorite' />{props.user.username}</Item.Header>
-            <Link to={`/chat/${props.user._id}`}>
+            <Link to={{
+              pathname: `/chat/${props.user._id}`,
+              state: {
+                showHomeBtn: true
+              }
+            }}>
               <Button basic size='mini' floated='right' color='green' >CHAT</Button>
             </Link>
         </Item.Content>
@@ -65,7 +72,7 @@ export default class OnlineUsers extends Component {
     return <Segment>
     <h3>Users Online</h3>
     <Item.Group>
-      {this.state.onlineUsers.map(user => <UserItem user={user} key={user._id} />)}
+      {this.state.onlineUsers.map(user => currentUser._id != user._id ? <UserItem user={user} key={user._id} /> : false)}
 
     </Item.Group>
   </Segment>

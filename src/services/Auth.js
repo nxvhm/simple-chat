@@ -90,6 +90,15 @@ const Auth = {
       error.response = response;
       throw error;
     }
+  },
+  /**
+   * Get axios with setted up authorization token
+   * @param void
+   * @return Axios
+   */
+  axios: () => {
+    axios.defaults.headers.common = {'Authorization': `Bearer ${Auth.getToken()}`};
+    return axios;
   }
 
 };
