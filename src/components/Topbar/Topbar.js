@@ -68,12 +68,20 @@ class Topbar extends Component {
   }
 
   render(){
+    const HomeBtn = (props) => {
+      return <Button.Content hidden={!props.showHomeBtn}>
+        <Button icon><Icon name="home"></Icon></Button>
+      </Button.Content>;
+    }
+
     return(
       <Menu className='bg-blue topnav'>
 
         {this.userDropDown(this.props.user)}
 
         <Menu.Item>
+          <HomeBtn showHomeBtn={this.props.showHomeBtn}></HomeBtn>
+          &nbsp;
           <Button toggle active={this.props.connectedToServer} onClick={this.props.toggleServerConnection}>
             {this.props.connectedToServer ? "ONLINE" : "OFFLINE"}
           </Button>
