@@ -1,4 +1,3 @@
-import axios from 'axios';
 import Auth from './Auth';
 
 const Users = {

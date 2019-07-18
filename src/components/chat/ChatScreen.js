@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import ChatPane from './ChatPane';
 import UserList from './../UserList/UserList';
 import Users from './../../services/Users';
+import {Image, Button, Icon} from 'semantic-ui-react'
+import { Link } from 'react-router-dom';
 
 /**
  * Chat Screen Component with ChatPane for messages
@@ -23,28 +25,55 @@ class ChatScreen extends Component {
       // and update the state with it. If error flag provided
       // redirect to home page
       Users.getUserData(userId).then(data => {
+
         if (!data.error) {
-          console.log(data);
           this.setState({receivingUserData: data});
         } else {
           window.location.href = '/';
         }
+
       });
 
     }
 
     render() {
+
+      let UserBar = (props) => {
+
+        if (props.user) {
+
+          return <div className='chat-user-bar bg-black'>
+
+            <Image size='mini' src={props.user.avatarUrl} className="float-left"/>
+
+            {props.user.username}
+
+            <Link to='/'>
+              <Button className="float-right" icon>
+                <Icon name="home"></Icon>
+              </Button>
+            </Link>
+
+         </div>
+        }
+        return false;
+      }
+
       return(
         <section id="content">
 
-        <div className="chat-screen-container">
+          <UserBar user={this.state.receivingUserData}></UserBar>
 
-          <ChatPane></ChatPane>
+          <div className="chat-screen-container">
 
-          <div className="user-list-container">
-            <UserList isHidden={this.props.userListIsHidden}></UserList>
+            <ChatPane receiver={this.state.receivingUserData}></ChatPane>
+
+            <div className="user-list-container">
+              <UserList isHidden={this.props.userListIsHidden}></UserList>
+            </div>
+
           </div>
-        </div>
+
         </section>
       )
     }

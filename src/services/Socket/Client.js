@@ -22,6 +22,7 @@ const SocketClient = {
 
   /**
    * Connect to socket Server
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/WebSocket#Properties
    * @param {String}  url   WebSocket server domain
    * @param {Int}     port  WebSocket Server Port
    * @param {String}  uid   User ID connecting to the socket
@@ -67,6 +68,13 @@ const SocketClient = {
     }
   },
 
+  /**
+   * Dispatch Event to the client using connection
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent
+   * @param   {String}  name    String representing the name of the event.
+   * @param   {Object}  detail  Value/Data associated with the event. Default null
+   * @return  {void}
+   */
   dispatchEvent: (name, detail = null) => {
     if (SocketClient.isConnected()) {
 

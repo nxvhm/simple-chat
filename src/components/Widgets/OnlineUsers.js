@@ -72,7 +72,7 @@ export default class OnlineUsers extends Component {
     return <Segment>
     <h3>Users Online</h3>
     <Item.Group>
-      {this.state.onlineUsers.map(user => currentUser._id != user._id ? <UserItem user={user} key={user._id} /> : false)}
+      {this.state.onlineUsers.map(user => currentUser._id !== user._id ? <UserItem user={user} key={user._id} /> : false)}
 
     </Item.Group>
   </Segment>
