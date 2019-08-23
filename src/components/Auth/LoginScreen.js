@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
 import { Button, Form, Message, Segment, Grid } from 'semantic-ui-react'
 import validator from 'validator';
 import Auth from './../../services/Auth';
@@ -20,7 +19,8 @@ class LoginScreen extends Component {
           successMsg: false,
           successMsgContent: '',
           formErrors: {email: '', password: ''},
-          redirect: false
+          redirect: false,
+          homescreen: '/homescreen',
       }
       this.handleSubmit     = this.handleSubmit.bind(this);
       this.handleUserInput  = this.handleUserInput.bind(this);
@@ -42,9 +42,12 @@ class LoginScreen extends Component {
     }
 
     componentDidMount() {
-      if (Auth.check()) {
-        this.setState({redirect: true});
-      }
+      let self = this;
+      Auth.check().then(user => {
+        if (user) {
+          window.location = self.state.homescreen;
+        }
+      });
     }
 
     // Update state when user inputs data
@@ -109,7 +112,7 @@ class LoginScreen extends Component {
           this.setState({successMsg: true});
           this.setState({successMsgContent: "GG WP"});
           setTimeout(() => {
-            window.location.href ='/';
+            window.location.href =this.state.homescreen;
           }, 500);
         }
       });
@@ -172,9 +175,9 @@ class LoginScreen extends Component {
     }
 
     render() {
-      const { redirect } = this.state;
-      if (redirect)
-        return <Redirect to='/'></Redirect>
+      // const { redirect } = this.state;
+      // if (redirect)
+        // return <Redirect to='/'></Redirect>
       // this.props.location.state.successMsgContent;
       return(
       <Grid container centered>

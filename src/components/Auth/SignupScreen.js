@@ -185,13 +185,13 @@ class SignupScreen extends Component {
 
     if (this.state.loginRedirectSuccess) {
       return <Redirect to={{
-        pathname: '/login',
+        pathname: '/',
         state: {successMsg: true, successMsgContent: 'Your registration was successfull, you can login in your account now'}
       }} />;
     }
 
     if (this.state.loginRedirect) {
-      return <Redirect to='/login' />;
+      return <Redirect to='/' />;
     }
 
     return(

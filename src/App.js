@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 
 import {Route} from 'react-router-dom';
-import { Grid } from 'semantic-ui-react'
-import Topbar from './components/Topbar/Topbar';
+
 import ChatScreen from './components/chat/ChatScreen';
 import LoginScreen from './components/Auth/LoginScreen';
 import SignupScreen from './components/Auth/SignupScreen';
 import HomeScreen from './components/HomeScreen/HomeScreen';
 import Auth from './services/Auth';
-import SocketClient from './services/Socket/Client';
-import AvatarsModal from './components/Modals/Avatars'
 
 import './App.css';
-const axios = require('axios');
 
 class App extends Component {
 
@@ -27,71 +23,9 @@ class App extends Component {
     };
 
     this.toggleUserList = this.toggleUserList.bind(this);
-    this.toggleAvatarsModal = this.toggleAvatarsModal.bind(this);
-    this.updateUserToken = this.updateUserToken.bind(this);
-    this.connectToServer = this.connectToServer.bind(this);
-    this.toggleServerConnection = this.toggleServerConnection.bind(this);
 
   }
 
-  /**
-   * Initialize Connection to the WebSocket server
-   * @return  {void}
-   */
-  connectToServer() {
-    //Initialize socket connection
-    let user = this.state.user;
-
-    if (user && !SocketClient.isConnected()) {
-
-      SocketClient.connect(
-        process.env.REACT_APP_SOCKET_URL,
-        process.env.REACT_APP_SOCKET_PORT,
-        user._id
-      , () => {
-        let connectedToServer = SocketClient.isConnected()
-        this.setState({connectedToServer});
-      });
-      // setTimeout(() => {
-      //   console.log(SocketClient.getConnection());
-      // }, 1000);
-    } else {
-      this.setState({connectedToServer: false })
-    }
-  }
-
-  /**
-   * Connect/Disconnet from ws server
-   * @return  {void}
-   */
-  toggleServerConnection() {
-    if (this.state.connectedToServer) {
-      SocketClient.getConnection().close(1000);
-      this.setState({connectedToServer: false})
-    } else {
-      this.connectToServer();
-    }
-  }
-
-  componentDidMount() {
-
-    let user = Auth.check();
-
-    if (user) {
-
-      let showAvatarsModal = user && user.avatar === ""
-        ? true
-        : false;
-
-      axios.defaults.headers.common = {'Authorization': `Bearer ${Auth.getToken()}`}
-
-      this.setState({user: user, showAvatarsModal: showAvatarsModal}, () => {
-        //Initialize socket connection after user is set in state
-        this.connectToServer();
-      });
-
-    }
-  }
   /**
    * Update User data
    * @param   {String}  token  JWT Token
@@ -110,41 +44,20 @@ class App extends Component {
     let userListState = !this.state.userListIsHidden;
     this.setState({userListIsHidden: userListState});
   }
-  /**
-   * Toggle show avatars modal flag
-   */
-  toggleAvatarsModal() {
-    this.setState({showAvatarsModal: !this.state.showAvatarsModal});
-    console.log(this.state);
-  }
 
   render() {
-    let {user, showAvatarsModal, connectedToServer} = this.state;
+    let {user, connectedToServer} = this.state;
     return (
       <div className="App">
+        <Route exact path="/" component={LoginScreen} />
+        <Route path="/signup" component={SignupScreen} />
 
-        {/* Call avatar modal if no avatar available for the user */}
-        <AvatarsModal user={user}
-          toggleAvatarsModal={this.toggleAvatarsModal}
-          isOpen={showAvatarsModal}
-          updateUserToken={this.updateUserToken}>
-        </AvatarsModal>
-
-        <Grid.Row>
-
-          <Topbar
-            toggleUserList={this.toggleUserList}
-            toggleAvatarsModal={this.toggleAvatarsModal}
+        <Route path="/homescreen" render={(props) =>
+          <HomeScreen
+            user={user}
             connectedToServer={connectedToServer}
             toggleServerConnection={this.toggleServerConnection}
-            showHomeBtn={false}
-            user={user}>
-          </Topbar>
-
-        </Grid.Row>
-
-        <Route exact path="/" render={(props) =>
-          <HomeScreen user={user} connectedToServer={connectedToServer}/>}
+            />}
         />
 
         <Route path="/chat/:userId" render={(props) =>
@@ -153,9 +66,6 @@ class App extends Component {
             userId={props.match.params.userId}
           />
         }/>
-
-        <Route path="/login" component={LoginScreen} />
-        <Route path="/signup" component={SignupScreen} />
 
       </div>
     );

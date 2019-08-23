@@ -41,8 +41,12 @@ export default class OnlineUsers extends Component {
 
   getOnlineUsers() {
     Users.getOnlineUsers().then(onlineUsers => {
+      if (onlineUsers.error) {
+        console.log(onlineUsers.stack);
+        onlineUsers = [];
+      }
       this.setState({onlineUsers});
-    })
+    });
   }
 
 
