@@ -20,6 +20,15 @@ const Auth = {
   getToken: () => {
     return localStorage.getItem('token');
   },
+  /**
+   * Verift token with the server
+   * @param   string  token  [token description]
+   * @return  bool
+   */
+  verify: (token) => {
+    let apiUrl = process.env.REACT_APP_API_URI;
+    axios.post(`${apiUrl}/verify` )
+  },
 
   /**
    * Remove token item from localStorage
@@ -55,16 +64,17 @@ const Auth = {
    */
   check: () => {
     let token = Auth.getToken();
+    let apiUrl = process.env.REACT_APP_API_URI;
 
-    try {
-      let userData = decode(token);
-      return (userData.exp > Date.now() / 1000) ? userData : false;
-
-    } catch (error) {
-      console.log("Token expired/invalid or not provided");
-      return false;
+    if (!token) {
+      return Promise.resolve(false);
     }
 
+    return axios.get(`${apiUrl}/verify-token`, {params: {token}})
+    .then(res => {
+      let result = res.data.success ? decode(token) : false;
+      return Promise.resolve(result);
+    });
   },
 
   /**
