@@ -64,7 +64,7 @@ class Topbar extends Component {
    */
   logout() {
     Auth.logout();
-    window.location.href ='/login';
+    window.location.href ='/';
   }
 
   render(){
@@ -82,9 +82,11 @@ class Topbar extends Component {
         <Menu.Item>
           <HomeBtn showHomeBtn={this.props.showHomeBtn}></HomeBtn>
           &nbsp;
-          <Button toggle active={this.props.connectedToServer} onClick={this.props.toggleServerConnection}>
-            {this.props.connectedToServer ? "ONLINE" : "OFFLINE"}
-          </Button>
+          <Button.Content hidden={!this.props.user}>
+            <Button toggle active={this.props.connectedToServer} onClick={this.props.toggleServerConnection}>
+              {this.props.connectedToServer ? "ONLINE" : "OFFLINE"}
+            </Button>
+          </Button.Content>
         </Menu.Item>
 
         <Menu.Item className="brand">

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Form, Message, Segment, Grid } from 'semantic-ui-react'
 import validator from 'validator';
+import Topbar from './../Topbar/Topbar';
 import Auth from './../../services/Auth';
 
 class LoginScreen extends Component {
@@ -180,6 +181,15 @@ class LoginScreen extends Component {
         // return <Redirect to='/'></Redirect>
       // this.props.location.state.successMsgContent;
       return(
+      <div>
+      <Topbar
+        toggleUserList=""
+        toggleAvatarsModal=""
+        connectedToServer={false}
+        toggleServerConnection={null}
+        showHomeBtn={false}
+        user={null}>
+      </Topbar>
       <Grid container centered>
         <Grid.Row className="mt40">
         <Grid.Column  mobile={16} tablet={8} computer={6}>
@@ -187,6 +197,7 @@ class LoginScreen extends Component {
         </Grid.Column>
         </Grid.Row>
       </Grid>
+      </div>
       )
     }
 }
