@@ -46,7 +46,7 @@ export default class HomeScreen extends Component {
   connectToServer() {
     //Initialize socket connection
     let user = this.state.user;
-
+    console.log('connectToServer()', SocketClient.isConnected());
     if (user && !SocketClient.isConnected()) {
 
       SocketClient.connect(
@@ -58,6 +58,8 @@ export default class HomeScreen extends Component {
         this.setState({connectedToServer});
       });
 
+    } else if(SocketClient.isConnected()) {
+      this.setState({connectedToServer: true })
     } else {
       this.setState({connectedToServer: false })
     }
@@ -96,7 +98,7 @@ export default class HomeScreen extends Component {
         ? true
         : false;
       } else {
-        window.location = '/login';
+        window.location = '/';
       }
       self.setState({user, showAvatarsModal});
 
