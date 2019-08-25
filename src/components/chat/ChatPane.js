@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Input, Grid, Button, Icon, Comment, Container} from 'semantic-ui-react'
 import Auth from './../../services/Auth';
+import axios from 'axios';
 
 class ChatPane extends Component {
 
@@ -10,6 +11,7 @@ class ChatPane extends Component {
     this.state = {
       msg: "",
       sendAvailable: false,
+      apiUrl: process.env.REACT_APP_API_URI,
     }
 
     this.onMessageType = this.onMessageType.bind(this);
@@ -30,7 +32,8 @@ class ChatPane extends Component {
   }
 
   onMessageSend() {
-    let msg = this.state.msg;
+    let {msg, apiUrl} = this.state;
+
 
     if (!msg || !msg.length) {
       return false;
@@ -43,11 +46,16 @@ class ChatPane extends Component {
       receiver_id: this.props.receiver._id,
       msg: msg
     };
-
     console.log('Payload ', payload);
+    axios.post(`${apiUrl}/message/send`, payload).then(res => {
+      console.log(res.data);
+    }).catch(err => {
+      console.log('send error', err);
+    })
   }
 
   render() {
+    let {sender, receiver} = this.props;
 
     let MsgItem = (props) => {
       return <Comment className={`chat-msg ${props.type}` + (props.type === 'send' ? ' float-right' : ' float-left')}>

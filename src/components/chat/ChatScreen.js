@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import ChatPane from './ChatPane';
 import UserList from './../UserList/UserList';
 import Users from './../../services/Users';
-import {Image, Button, Icon} from 'semantic-ui-react'
+import {Image, Menu} from 'semantic-ui-react'
+import {withRouter} from 'react-router-dom'
 import { Link } from 'react-router-dom';
+import Auth from './../../services/Auth';
 
 /**
  * Chat Screen Component with ChatPane for messages
@@ -14,8 +16,11 @@ class ChatScreen extends Component {
       super(props);
 
       this.state = {
-        receivingUserData: null //Data about the user we chat with (who will receive our messages)
+        receiver: null, //Data about the user we chat with (who will receive our messages)
+        sender: null
       }
+
+      this.handleItemClick = this.handleItemClick.bind(this);
     }
 
     componentDidMount() {
@@ -27,34 +32,62 @@ class ChatScreen extends Component {
       Users.getUserData(userId).then(data => {
 
         if (!data.error) {
-          this.setState({receivingUserData: data});
+          this.setState({receiver: data});
         } else {
           window.location.href = '/';
         }
-
       });
 
+      let self = this;
+
+      Auth.check().then(function(res) {
+        if (res) {
+          self.setState({sender: res});
+        }
+      });
+    }
+    handleItemClick(e) {
+      console.log(e.target.getAttribute('name'));
+      if (e.target.getAttribute('name') === 'home') {
+        this.props.history.push('/homescreen');
+      }
     }
 
     render() {
 
+      let SenderMenu = (props) => {
+        if (!props.sender) {
+          return false;
+        }
+        return(
+        <Menu.Item color='blue' name='sender' active={true} onClick={null}>
+         <Image src={props.sender.avatar} size='mini' circular />
+         &nbsp;Profile
+        </Menu.Item>
+        );
+      };
+
       let UserBar = (props) => {
+        if (!props.user) return false;
 
         if (props.user) {
+          return <Menu>
 
-          return <div className='chat-user-bar bg-black'>
+          <Menu.Item header onClick={this.handleItemClick}>
+            <h1 name="home">Chatty</h1>
+          </Menu.Item>
 
-            <Image size='mini' src={props.user.avatarUrl} className="float-left"/>
+          <Menu.Item color='blue' active={false}  onClick={this.handleItemClick}>
+             <Image src={props.user.avatarUrl} size='mini' circular />
+             &nbsp;{props.user.username}
+          </Menu.Item>
 
-            {props.user.username}
+          <Menu.Menu position='right'>
+            <SenderMenu sender={props.sender}></SenderMenu>
+          </Menu.Menu>
 
-            <Link to='/'>
-              <Button className="float-right" icon>
-                <Icon name="home"></Icon>
-              </Button>
-            </Link>
+        </Menu>
 
-         </div>
         }
         return false;
       }
@@ -62,11 +95,11 @@ class ChatScreen extends Component {
       return(
         <section id="content">
 
-          <UserBar user={this.state.receivingUserData}></UserBar>
+          <UserBar user={this.state.receiver} sender={this.state.sender}></UserBar>
 
           <div className="chat-screen-container">
 
-            <ChatPane receiver={this.state.receivingUserData}></ChatPane>
+            <ChatPane receiver={this.state.receiver} sender={this.state.sender}></ChatPane>
 
             <div className="user-list-container">
               <UserList isHidden={this.props.userListIsHidden}></UserList>
@@ -79,4 +112,4 @@ class ChatScreen extends Component {
     }
 }
 
-export default ChatScreen
+export default withRouter(ChatScreen)
