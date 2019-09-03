@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Input, Grid, Button, Icon, Comment, Container} from 'semantic-ui-react'
 import Auth from './../../services/Auth';
 import axios from 'axios';
+import SocketClient from './../../services/Socket/Client';
 
 class ChatPane extends Component {
 
@@ -12,13 +13,49 @@ class ChatPane extends Component {
       msg: "",
       sendAvailable: false,
       apiUrl: process.env.REACT_APP_API_URI,
+      messages: [
+        {
+          type: 'send', avatar: 'https://react.semantic-ui.com/images/avatar/small/stevie.jpg',
+          body: '111111s a free online encyclopedia, created and edited by volunte',
+        },
+        {
+          type: 'receive', avatar: 'https://react.semantic-ui.com/images/avatar/small/elliot.jpg',
+          body: 'Wikipedia is dsadas free online encyclopedia, created and edited by volunte',
+        },
+        {
+          type: 'send', avatar: 'https://react.semantic-ui.com/images/avatar/small/stevie.jpg',
+          body: 'Wikipedia is a free online encyclopedia, created and edited by volunte',
+        },
+        {
+          type: 'receive', avatar: 'https://react.semantic-ui.com/images/avatar/small/elliot.jpg',
+          body: 'Wikipedia is dsadas free online encyclopedia, created and edited by volunte',
+        },
+      ]
     }
 
     this.onMessageType = this.onMessageType.bind(this);
     this.onMessageSend = this.onMessageSend.bind(this);
   }
 
+  MessageItem = (props) => {
+    return(
+    <Grid.Row verticalAlign='middle'>
+      <Comment.Group>
 
+    <Comment className={`chat-msg ${props.type}` + (props.type === 'send' ? ' float-right' : ' float-left')}>
+    <Comment.Avatar src={props.avatar} />
+    <Comment.Content>
+      <Comment.Metadata>
+        5 days ago
+        <Icon name='star' />5 Faves
+      </Comment.Metadata>
+      <Comment.Text>{props.body}</Comment.Text>
+    </Comment.Content>
+    </Comment>
+      </Comment.Group>
+    </Grid.Row>
+    );
+  }
 
   /**
    * OnMessageType Input Handler
@@ -46,47 +83,52 @@ class ChatPane extends Component {
       receiver_id: this.props.receiver._id,
       msg: msg
     };
-    console.log('Payload ', payload);
+
+    let self = this;
+
     axios.post(`${apiUrl}/message/send`, payload).then(res => {
-      console.log(res.data);
+
+      let newMsgItem = {
+        type: 'send',
+        body: payload.msg,
+        avatar: self.props.sender.avatar
+      };
+
+      let messages = self.state.messages;
+      messages.push(newMsgItem);
+      self.setState({messages, msg: ''});
+
+      console.log('Payload ', res.data, payload);
+
+      if (res.data.success && SocketClient.isConnected()) {
+        // If message successfully send and saved in db, then
+        // send new message to chat server to notify receiver
+        SocketClient.getConnection().send(JSON.stringify({
+          type: 'new-pm',
+          receiver_id: payload.receiver_id,
+          sender_id: payload.sender_id,
+          body: {contents: payload.msg, avatar: self.props.sender.avatar}
+        }));
+      }
+
     }).catch(err => {
       console.log('send error', err);
+
     })
   }
 
   render() {
+    const MsgItem = this.MessageItem;
     let {sender, receiver} = this.props;
-
-    let MsgItem = (props) => {
-      return <Comment className={`chat-msg ${props.type}` + (props.type === 'send' ? ' float-right' : ' float-left')}>
-        <Comment.Avatar src={props.avatar} />
-        <Comment.Content>
-          <Comment.Metadata>
-            <span>5 days ago</span>
-          </Comment.Metadata>
-          <Comment.Text>{props.body}</Comment.Text>
-        </Comment.Content>
-      </Comment>
-    }
-
     return(
       <div>
         <div className='bg-gray-light chat-messages' >
-        <Container text>
-
-          <Comment.Group>
-            <MsgItem type="receive" body="Msg goes here mate" avatar="https://react.semantic-ui.com/images/avatar/small/stevie.jpg"></MsgItem>
-            <MsgItem type="receive" body="Wikipedia is a free online encyclopedia, created and edited by volunteers around the world and hosted by the Wikimedia Foundation.Wikipedia is a free online encyclopedia, created and edited by volunteers around the world and hosted by the Wikimedia Foundation.Wikipedia is a free online encyclopedia, created and edited by volunteers around the world and hosted by the Wikimedia Foundation.Wikipedia is a free online encyclopedia, created and edited by volunteers around the world and hosted by the Wikimedia Foundation." avatar="https://react.semantic-ui.com/images/avatar/small/stevie.jpg"></MsgItem>
-            <MsgItem type="receive" body="BRING THE LOUD BUDDY" avatar="https://react.semantic-ui.com/images/avatar/small/stevie.jpg"></MsgItem>
-          </Comment.Group>
-
-          <Comment.Group>
-            <MsgItem type="send" body="Msg goes here mate" avatar='https://react.semantic-ui.com/images/avatar/small/elliot.jpg'></MsgItem>
-            <MsgItem type="send" body="Wikipedia is a free online encyclopedia, created and edited by volunteers around the world and hosted by the Wikimedia Foundation.Wikipedia is a free online encyclopedia, created and edited by volunteers around the world and hosted by the Wikimedia Foundation.Wikipedia is a free online encyclopedia, created and edited by volunteers around the world and hosted by the Wikimedia Foundation.Wikipedia is a free online encyclopedia, created and edited by volunteers around the world and hosted by the Wikimedia Foundation." avatar='https://react.semantic-ui.com/images/avatar/small/elliot.jpg'></MsgItem>
-            <MsgItem type="send" body="BRING THE LOUD BUDDY" avatar='https://react.semantic-ui.com/images/avatar/small/elliot.jpg'></MsgItem>
-          </Comment.Group>
-
-        </Container>
+        <Grid divided='vertically' textAlign='center'>
+          {this.state.messages.map((msg, index) => {
+              return <MsgItem key={'msg-'+index} type={msg.type} body={msg.body} avatar={msg.avatar}></MsgItem>
+            }
+          )}
+        </Grid>
         </div>
 
         <div className="msg-input-container">

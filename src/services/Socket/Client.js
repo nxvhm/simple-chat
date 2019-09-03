@@ -59,7 +59,7 @@ const SocketClient = {
 
       console.log('WsMsg', data);
       if (data.type === 'event') {
-        return SocketClient.dispatchEvent(data.name);
+        return SocketClient.dispatchEvent(data.name, data.body ? data.body : null);
       }
 
     } catch (error) {
