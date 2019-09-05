@@ -151,7 +151,7 @@ section#content {
   padding: 12px!important;
   border-radius: 6px;
   max-width: 450px;
-  min-width: 300px;
+  min-width: 450px;
   display: block;
 }
 .chat-msg.receive {
@@ -161,9 +161,11 @@ section#content {
   background-color: #0049B2!important;
   width: 80%;
 }
-.ui.comments .comment.chat-msg .text,
-.ui.comments .comment.chat-msg .metadata {
+.ui.comments .comment.chat-msg .text {
   color: #fff;
+}
+.ui.comments .comment.chat-msg .metadata {
+  color: rgba(255, 255, 255, 0.753);
 }
 
 .msg-input-container {
