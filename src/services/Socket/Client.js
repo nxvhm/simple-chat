@@ -28,27 +28,30 @@ const SocketClient = {
    * @param {String}  uid   User ID connecting to the socket
    * @callback cb The function to execute on successfull connection or error/interuption.
    */
-  connect: (url, port, uid, cb = null) => {
+  connect: (url, port, uid, cb = null, errorCb = null) => {
     SocketClient.connection = new WebSocket(`ws://${url}:${port}?uid=${uid}`);
-
-    //If connection throws error execute the provided
-    SocketClient.connection.onerror = () => {
-      // Some logic...
-      if (cb) cb();
-    }
     // On connection open execute the provided
+    SocketClient.connection.onmessage = SocketClient.incomingMessage;
+
     SocketClient.connection.onopen = () => {
       // Some logic here ??
       if (cb) cb();
     };
-
-    SocketClient.connection.onmessage = SocketClient.incomingMessage;
 
     // SocketClient.connection.addEventListener('new-user-online', function(e) {
     //   console.log(console.log('new-user-online', e));
     // });
   },
 
+  onError: (onErrorCallback) => {
+    //If connection throws error execute the provided callback
+    SocketClient.connection.onerror = onErrorCallback;
+  },
+
+  onClose: (onCloseCallback) => {
+    //If connection throws error execute the provided callback
+    SocketClient.connection.onclose = onCloseCallback;
+  },
   /**
    * On WebSocket message handler
    * @param   {object}  payload
@@ -59,7 +62,7 @@ const SocketClient = {
 
       console.log('WsMsg', data);
       if (data.type === 'event') {
-        return SocketClient.dispatchEvent(data.name, data.body ? data.body : null);
+        return SocketClient.dispatchEvent(data.name, data.body ? data : null);
       }
 
     } catch (error) {
