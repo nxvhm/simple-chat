@@ -46,7 +46,6 @@ export default class HomeScreen extends Component {
   connectToServer() {
     //Initialize socket connection
     let user = this.state.user;
-    console.log('connectToServer()', SocketClient.isConnected());
     if (user && !SocketClient.isConnected()) {
 
       SocketClient.connect(
@@ -58,10 +57,23 @@ export default class HomeScreen extends Component {
         this.setState({connectedToServer});
       });
 
+      SocketClient.onClose((event) => {
+        // Connection error or interupted, try again
+        this.setState({connectedToServer: false});
+        console.log("WS Server connection closedlost, try again in 5 sec");
+        setTimeout(() => {
+          this.connectToServer();
+        }, 5000);
+      });
+
+      SocketClient.onError((event) => {
+        // Connection error or interupted, try again
+        this.setState({connectedToServer: false});
+        console.log("WS Server connection interrupted");
+      });
+
     } else if(SocketClient.isConnected()) {
       this.setState({connectedToServer: true })
-    } else {
-      this.setState({connectedToServer: false })
     }
   }
   /**
