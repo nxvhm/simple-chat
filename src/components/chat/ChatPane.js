@@ -22,19 +22,12 @@ class ChatPane extends Component {
           type: 'receive', avatar: 'https://react.semantic-ui.com/images/avatar/small/elliot.jpg',
           body: 'Wikipedia is dsadas free online encyclopedia, created and edited by volunte',
         },
-        {
-          type: 'send', avatar: 'https://react.semantic-ui.com/images/avatar/small/stevie.jpg',
-          body: 'Wikipedia is a free online encyclopedia, created and edited by volunte',
-        },
-        {
-          type: 'receive', avatar: 'https://react.semantic-ui.com/images/avatar/small/elliot.jpg',
-          body: 'Wikipedia is dsadas free online encyclopedia, created and edited by volunte',
-        },
       ]
     }
 
     this.onMessageType = this.onMessageType.bind(this);
     this.onMessageSend = this.onMessageSend.bind(this);
+    this.newPrivateMessage = this.newPrivateMessage.bind(this);
   }
 
   MessageItem = (props) => {
@@ -68,6 +61,40 @@ class ChatPane extends Component {
     this.setState({sendAvailable: (e.target.value.length && e.target.value.trim()) });
   }
 
+  onNewPrivateMessage() {
+    if (SocketClient.isConnected()) {
+      SocketClient.getConnection().addEventListener('new-pm', this.newPrivateMessage);
+    }
+  }
+
+  newPrivateMessage(event) {
+
+    if (!Auth.check()) { return window.location = '/'; }
+    let user = Auth.user();
+
+    if (!event.detail) return;
+    let payload = event.detail;
+
+    if (payload.receiver_id == user._id && payload.sender_id == this.props.receiver._id) {
+
+      let messages = this.state.messages;
+
+      messages.push({
+        type: 'receive',
+        body: payload.body.contents,
+        avatar: payload.body.avatar
+      });
+
+      this.setState({messages});
+    }
+  }
+
+  componentWillUnmount() {
+    if (SocketClient.isConnected()) {
+      SocketClient.getConnection().removeEventListener('new-pm', this.newPrivateMessage);
+    }
+  }
+
   onMessageSend() {
     let {msg, apiUrl} = this.state;
 
@@ -98,15 +125,18 @@ class ChatPane extends Component {
       messages.push(newMsgItem);
       self.setState({messages, msg: ''});
 
-      console.log('Payload ', res.data, payload);
+      console.log('Payload ', res.data.message, payload);
 
       if (res.data.success && SocketClient.isConnected()) {
         // If message successfully send and saved in db, then
         // send new message to chat server to notify receiver
         SocketClient.getConnection().send(JSON.stringify({
-          type: 'new-pm',
+          type: 'event',
+          name: 'new-pm',
           receiver_id: payload.receiver_id,
           sender_id: payload.sender_id,
+          message_id: res.data.message._id,
+          created_at: res.data.message.created_at,
           body: {contents: payload.msg, avatar: self.props.sender.avatar}
         }));
       }
@@ -118,6 +148,8 @@ class ChatPane extends Component {
   }
 
   render() {
+    this.onNewPrivateMessage();
+
     const MsgItem = this.MessageItem;
     let {sender, receiver} = this.props;
     return(
