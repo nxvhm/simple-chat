@@ -183,7 +183,6 @@ class LoginScreen extends Component {
       return(
       <div>
       <Topbar
-        toggleUserList=""
         toggleAvatarsModal=""
         connectedToServer={false}
         toggleServerConnection={null}
