@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
-import {Button, Dropdown, Menu, Icon, Image} from 'semantic-ui-react';
+import {Button, Dropdown, Menu, Icon, Image, Label, Item, Divider} from 'semantic-ui-react';
 import Auth from './../../services/Auth';
 
 class Topbar extends Component {
 
   constructor(props) {
     super(props);
-
+    this.state = {
+      msgDropdownOpen: false
+    }
     this.logout = this.logout.bind(this);
     this.callAvatarsModal = this.callAvatarsModal.bind(this);
+    this.toggleMessageDropdown = this.toggleMessageDropdown.bind(this);
   }
   /**
    * Call avatar modal
@@ -57,6 +60,54 @@ class Topbar extends Component {
     }
   }
 
+  userMessagesDropdown(user){
+    if (!user) return false;
+    return <Menu.Item  active={false} onClick={this.toggleMessageDropdown}
+      className={"color-white"}>
+      <Icon name='envelope' size='large' className="color-white mr-0" />
+      <Label color='red' size='mini' className='unread-messages-count'>3</Label>
+      <Dropdown>
+
+      <Dropdown.Menu open={this.state.msgDropdownOpen}>
+        <Dropdown.Item className="message-dropdown-item">
+            <Image avatar={true} size='large' className="float-left" src='https://react.semantic-ui.com/images/avatar/large/stevie.jpg' />
+            <Item.Header>
+              <strong>Stevie Feliciano</strong>
+              <span className="message-header-date float-right">16:34 22.09.2019</span>
+              </Item.Header>
+            <Item.Content>dasdasdasdasdasdadasdsdas dasdasdsa</Item.Content>
+        </Dropdown.Item>
+
+        <Dropdown.Item className="message-dropdown-item">
+            <Image avatar={true} size='large' className="float-left" src='https://react.semantic-ui.com/images/avatar/large/stevie.jpg' />
+            <Item.Header>
+              <strong>Stevie Feliciano</strong>
+              <span className="message-header-date float-right">16:34 22.09.2019</span>
+              </Item.Header>
+            <Item.Content>dasdasdasdasdasdadasdsdas dasdasdsa</Item.Content>
+        </Dropdown.Item>
+
+        <Dropdown.Item className="message-dropdown-item">
+            <Image avatar={true} size='large' className="float-left" src='https://react.semantic-ui.com/images/avatar/large/stevie.jpg' />
+            <Item.Header>
+              <strong>Stevie Feliciano</strong>
+              <span className="message-header-date float-right">16:34 22.09.2019</span>
+              </Item.Header>
+            <Item.Content>dasdasdasdasdasdadasdsdas dasdasdsa</Item.Content>
+        </Dropdown.Item>
+
+        <Dropdown.Item className="message-dropdown-item">
+            <Image avatar={true} size='large' className="float-left" src='https://react.semantic-ui.com/images/avatar/large/stevie.jpg' />
+            <Item.Header>
+              <strong>Stevie Feliciano</strong>
+              <span className="message-header-date float-right">16:34 22.09.2019</span>
+              </Item.Header>
+            <Item.Content>dasdasdasdasdasdadasdsdas dasdasdsa</Item.Content>
+        </Dropdown.Item>
+      </Dropdown.Menu>
+      </Dropdown>
+    </Menu.Item>
+  }
 
 
   /**
@@ -67,6 +118,11 @@ class Topbar extends Component {
     window.location.href ='/';
   }
 
+  toggleMessageDropdown() {
+    let {msgDropdownOpen} = this.state;
+    this.setState({msgDropdownOpen: !msgDropdownOpen});
+  }
+
   render(){
     const HomeBtn = (props) => {
       return <Button.Content hidden={!props.showHomeBtn}>
@@ -75,7 +131,7 @@ class Topbar extends Component {
     }
 
     return(
-      <Menu className='bg-blue topnav'>
+      <Menu className='bg-blue '>
 
         {this.userDropDown(this.props.user)}
 
@@ -88,6 +144,8 @@ class Topbar extends Component {
             </Button>
           </Button.Content>
         </Menu.Item>
+
+        {this.userMessagesDropdown(this.props.user)}
 
         <Menu.Item className="brand">
             <h1>Chatty</h1>
