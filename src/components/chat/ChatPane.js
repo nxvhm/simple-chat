@@ -13,16 +13,7 @@ class ChatPane extends Component {
       msg: "",
       sendAvailable: false,
       apiUrl: process.env.REACT_APP_API_URI,
-      messages: [
-        {
-          type: 'send', avatar: 'https://react.semantic-ui.com/images/avatar/small/stevie.jpg',
-          body: '111111s a free online encyclopedia, created and edited by volunte',
-        },
-        {
-          type: 'receive', avatar: 'https://react.semantic-ui.com/images/avatar/small/elliot.jpg',
-          body: 'Wikipedia is dsadas free online encyclopedia, created and edited by volunte',
-        },
-      ]
+      messages: []
     }
 
     this.onMessageType = this.onMessageType.bind(this);

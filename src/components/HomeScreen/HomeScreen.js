@@ -102,17 +102,13 @@ export default class HomeScreen extends Component {
     let self = this;
     Auth.check().then(function(res) {
       let user = res;
-      let showAvatarsModal = false;
 
       if (user) {
         axios.defaults.headers.common = {'Authorization': `Bearer ${Auth.getToken()}`}
-        showAvatarsModal = user && user.avatar === ""
-        ? true
-        : false;
       } else {
         window.location = '/';
       }
-      self.setState({user, showAvatarsModal});
+      self.setState({user});
 
       if (self.state.connectedToServer === false) {
         self.connectToServer();
@@ -123,7 +119,7 @@ export default class HomeScreen extends Component {
 
   render() {
 
-    let {user, showAvatarsModal, connectedToServer} = this.state;
+    let {user, connectedToServer} = this.state;
 
     /* Call avatar modal if no avatar available for the user */
 
@@ -149,7 +145,7 @@ export default class HomeScreen extends Component {
       <div>
         <AvatarsModal user={user}
           toggleAvatarsModal={this.toggleAvatarsModal}
-          isOpen={showAvatarsModal}
+          isOpen={user.avatar === ""}
           updateUserToken={this.updateUserToken}>
         </AvatarsModal>
 
