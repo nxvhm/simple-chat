@@ -27,7 +27,7 @@ const Auth = {
    */
   verify: (token) => {
     let apiUrl = process.env.REACT_APP_API_URI;
-    axios.post(`${apiUrl}/verify` )
+    axios.post(`${apiUrl}/verify`)
   },
 
   /**
@@ -73,6 +73,13 @@ const Auth = {
     return axios.get(`${apiUrl}/verify-token`, {params: {token}})
     .then(res => {
       let result = res.data.success ? decode(token) : false;
+      if (result) {
+        let expiration = new Date(result.exp*1000).getTime();
+        let now = new Date().getTime();
+        let minutesLeft = new Date(expiration-now).getUTCMinutes();
+        console.log('expires in ', minutesLeft);
+      }
+
       return Promise.resolve(result);
     });
   },
@@ -109,7 +116,36 @@ const Auth = {
   axios: () => {
     axios.defaults.headers.common = {'Authorization': `Bearer ${Auth.getToken()}`};
     return axios;
+  },
+
+  emitExpirationEvent(minutesBefore) {
+    let token = Auth.getToken();
+    if (!token)
+      return false;
+
+    let claims = decode(Auth.getToken());
+
+    if (!claims) return false;
+
+    let expiration = new Date(claims.exp*1000).getTime();
+
+    let now = new Date().getTime();
+
+    if (expiration < now) {
+      return false;
+    }
+
+    // Calculate minutes left to expiration
+    let minutesLeft = new Date(expiration-now).getUTCMinutes();
+    console.log('expires in ', minutesLeft);
+
+    let eventMinutes = minutesLeft - minutesBefore;
+
+    setTimeout(() => {
+      document.dispatchEvent(new Event("token-expiration"));
+    }, eventMinutes*60*1000);
   }
+
 
 };
 

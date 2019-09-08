@@ -45,6 +45,10 @@ class App extends Component {
     this.setState({userListIsHidden: userListState});
   }
 
+  componentDidMount() {
+    Auth.emitExpirationEvent(5);
+  }
+
   render() {
     let {user, connectedToServer} = this.state;
     return (
