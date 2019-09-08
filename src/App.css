@@ -15,7 +15,7 @@ html, body {
 
 
 .hidden {
-  display: none;
+  display: none!important;
 }
 
 .topbar {
@@ -47,12 +47,14 @@ html, body {
 .bg-brown   { background-color: #975b33!important; }
 .bg-grey    { background-color: #838383!important; }
 .bg-black   { background-color: #27292a; }
+.color-white { color: #fff; }
 .bg-grey-light { background-color: #e0e0e0!important; }
 .mt10 { margin-top: 10px; }
 .mt20 { margin-top: 20px; }
 .mt30 { margin-top: 30px; }
 .mt40 { margin-top: 40px; }
-
+.ml-0 { margin-left: 0px!important;}
+.mr-0 { margin-right: 0px!important;}
 .height50 {
   max-height: 50px;
   height: 50px;
@@ -116,7 +118,10 @@ section#content {
 .ui.menu.topnav {
   border-radius: 0;
 }
-
+.ui.menu .item.color-white,
+.ui.menu .item.color-white:hover {
+  color: #fff;
+}
 .ui.grid > .column.no-padding {
   padding-left: 0;
   padding-right: 0;
@@ -191,7 +196,10 @@ section#content {
   padding-top: 11px;
 }
 
-
+.unread-messages-count{
+  margin-left: -9px !important;
+  z-index:1000;
+}
 
 .user-list {
   min-height: auto;
@@ -254,4 +262,26 @@ section#content {
   padding: 10px;
   height: 50px;
   color: #fff;
+}
+.ui.menu .ui.dropdown .menu > .item.message-dropdown-item {
+  min-width: 300px;
+  max-width: 300px;
+  width: 300px;
+}
+.ui.dropdown .menu > .item.message-dropdown-item > .image,
+.ui.dropdown .menu > .item.message-dropdown-item > img
+{
+  float: left;
+  margin-top: 10px;
+}
+.ui.dropdown .menu > .item.message-dropdown-item > .content{
+  float: none;
+  word-wrap: break-word;
+  white-space: normal;
+  margin-left: 15px;
+}
+
+.message-header-date{
+  font-size: 11px;
+  color: rgba(0,0,0,.4);
 }
