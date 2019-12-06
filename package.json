@@ -5,11 +5,14 @@
   "dependencies": {
     "axios": "^0.18.0",
     "jwt-decode": "^2.2.0",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
+    "react-redux": "^7.1.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.0.3",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0",
     "semantic-ui-react": "^0.82.3",
     "simplebar-react": "0.0.1-beta.4",
     "validator": "^10.8.0"
