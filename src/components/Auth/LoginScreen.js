@@ -33,22 +33,13 @@ class LoginScreen extends Component {
       // Location Props
       let locProps = this.props.location;
 
-      let successMsg = locProps.state && locProps.state.successMsg
+      let successMsg = locProps && locProps.state && locProps.state.successMsg
         ? true : false;
 
-      let successMsgContent = locProps.state && locProps.state.successMsgContent
+      let successMsgContent = locProps && locProps.state && locProps.state.successMsgContent
       ? locProps.state.successMsgContent : '';
 
       this.setState({successMsg, successMsgContent});
-    }
-
-    componentDidMount() {
-      let self = this;
-      Auth.check().then(user => {
-        if (user) {
-          window.location = self.state.homescreen;
-        }
-      });
     }
 
     // Update state when user inputs data
@@ -176,9 +167,11 @@ class LoginScreen extends Component {
     }
 
     render() {
-      // const { redirect } = this.state;
-      // if (redirect)
-        // return <Redirect to='/'></Redirect>
+
+      if (this.props.user) {
+        window.location = this.state.homescreen;
+      }
+
       // this.props.location.state.successMsgContent;
       return(
       <div>

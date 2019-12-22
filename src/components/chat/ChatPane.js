@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Grid, Button, Icon, Comment, Container} from 'semantic-ui-react'
+import { Input, Grid, Button, Icon, Comment} from 'semantic-ui-react'
 import Auth from './../../services/Auth';
 import axios from 'axios';
 import SocketClient from './../../services/Socket/Client';
@@ -66,7 +66,7 @@ class ChatPane extends Component {
     if (!event.detail) return;
     let payload = event.detail;
 
-    if (payload.receiver_id == user._id && payload.sender_id == this.props.receiver._id) {
+    if (payload.receiver_id === user._id && payload.sender_id === this.props.receiver._id) {
 
       let messages = this.state.messages;
 
@@ -142,7 +142,6 @@ class ChatPane extends Component {
     this.onNewPrivateMessage();
 
     const MsgItem = this.MessageItem;
-    let {sender, receiver} = this.props;
     return(
       <div>
         <div className='bg-gray-light chat-messages' >

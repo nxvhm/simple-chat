@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 
 import {Route} from 'react-router-dom';
 
-import ChatScreen from './components/chat/ChatScreen';
+import ChatScreen from './components/Chat/ChatScreen';
 import LoginScreen from './components/Auth/LoginScreen';
 import SignupScreen from './components/Auth/SignupScreen';
 import HomeScreen from './components/HomeScreen/HomeScreen';
 import Auth from './services/Auth';
+import {connect} from 'react-redux';
+import * as userActions from './actions/userActions';
 
 import './App.css';
 
@@ -49,16 +51,24 @@ class App extends Component {
     Auth.emitExpirationEvent(5);
   }
 
+  componentWillMount() {
+
+  }
+
   render() {
-    let {user, connectedToServer} = this.state;
+    let {connectedToServer} = this.state;
     return (
       <div className="App">
-        <Route exact path="/" component={LoginScreen} />
+        <Route exact path="/"
+          render={(props) =>
+          <LoginScreen user={this.props.user} />}
+        />
+
         <Route path="/signup" component={SignupScreen} />
 
         <Route path="/homescreen" render={(props) =>
           <HomeScreen
-            user={user}
+            user={this.props.user}
             connectedToServer={connectedToServer}
             toggleServerConnection={this.toggleServerConnection}
             />}
@@ -75,5 +85,15 @@ class App extends Component {
     );
   }
 }
+function mapStateToProps(state, ownProps) {
+  return {
+    user: state.user
+  };
+}
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+  getUserProfile: () => dispatch(userActions.getUser())
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

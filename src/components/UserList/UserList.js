@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import axios from 'axios';
 import { List, Image } from 'semantic-ui-react'
-import 'simplebar';
+// import 'simplebar';
 import 'simplebar/dist/simplebar.css';
 class UserList extends Component {
 
@@ -33,7 +33,7 @@ class UserList extends Component {
     );
 
     return(
-      <div className={'user-list bg-black '  + (this.props.isHidden === true ? 'hidden-list' : '')} data-simplebar>
+      <div className={'user-list bg-black '  + (this.props.isHidden === true ? 'hidden-list' : '')}>
         <List>
           {this.state.usersList.map(user => <ListItem user={user} key={Math.random()+user.name} />)}
         </List>

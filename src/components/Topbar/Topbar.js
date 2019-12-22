@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Dropdown, Menu, Icon, Image, Label, Item, Divider} from 'semantic-ui-react';
+import {Button, Dropdown, Menu, Icon, Image, Label, Item} from 'semantic-ui-react';
 import Auth from './../../services/Auth';
 
 class Topbar extends Component {
