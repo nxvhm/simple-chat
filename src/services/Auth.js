@@ -73,13 +73,6 @@ const Auth = {
     return axios.get(`${apiUrl}/verify-token`, {params: {token}})
     .then(res => {
       let result = res.data.success ? decode(token) : false;
-      if (result) {
-        let expiration = new Date(result.exp*1000).getTime();
-        let now = new Date().getTime();
-        let minutesLeft = new Date(expiration-now).getUTCMinutes();
-        console.log('expires in ', minutesLeft);
-      }
-
       return Promise.resolve(result);
     });
   },

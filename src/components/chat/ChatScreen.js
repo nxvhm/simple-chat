@@ -4,7 +4,6 @@ import UserList from './../UserList/UserList';
 import Users from './../../services/Users';
 import {Image, Menu} from 'semantic-ui-react'
 import {withRouter} from 'react-router-dom'
-import { Link } from 'react-router-dom';
 import Auth from './../../services/Auth';
 
 /**

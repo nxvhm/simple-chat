@@ -1,28 +1,39 @@
 import React, {Component} from 'react';
-import { Button, Segment, Grid, Card, Image, Icon, Divider } from 'semantic-ui-react'
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import { Segment, Grid, Card, Divider, Dimmer, Loader } from 'semantic-ui-react'
 import OnlineUsers from '../Widgets/OnlineUsers';
 import Auth from './../../services/Auth';
 import Topbar from './../Topbar/Topbar';
 import AvatarsModal from './../Modals/Avatars'
 import SocketClient from './../../services/Socket/Client';
-
+import * as actions from './../../actions/chatRoomActions';
+import * as userActions from './../../actions/userActions';
+import CreateChatRoomModal from './../Chat/Room/CreateModal';
+import ChatRoomItem from './../Chat/Room/Item';
 const axios = require('axios');
 
-export default class HomeScreen extends Component {
+class HomeScreen extends Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
       user: false,
-      showAvatarsModal: false,
-      connectedToServer: false
+      connectedToServer: false,
+      chatRoomsLoading: false,
+      modals: {
+        selectAvatar: false,
+        createChatRoom: false
+      }
     }
 
     this.toggleServerConnection = this.toggleServerConnection.bind(this);
     this.connectToServer = this.connectToServer.bind(this);
     this.toggleAvatarsModal = this.toggleAvatarsModal.bind(this);
+    this.toggleChatRoomsModal = this.toggleChatRoomsModal.bind(this);
     this.updateUserToken = this.updateUserToken.bind(this);
+    this.addRoom = this.addRoom.bind(this);
 
   }
 
@@ -76,6 +87,7 @@ export default class HomeScreen extends Component {
       this.setState({connectedToServer: true })
     }
   }
+
   /**
    * Update User data
    * @param   {String}  token  JWT Token
@@ -83,23 +95,44 @@ export default class HomeScreen extends Component {
   updateUserToken(token) {
     Auth.setToken(token);
 
-    let user = Auth.check();
+    Auth.check().then(user => {
+      if (user) {
+        this.setState({user});
+      }
+    }).catch(err => {
+      console.log(err.message);
+    });
 
-    if (user) {
-      this.setState({user});
-    }
   }
 
   /**
    * Toggle show avatars modal flag
    */
   toggleAvatarsModal() {
-    this.setState({showAvatarsModal: !this.state.showAvatarsModal});
-    console.log(this.state);
+    let modals = this.state.modals;
+    modals.selectAvatar = !modals.selectAvatar;
+    this.setState({modals});
+  }
+
+  /**
+   * Toggle Create Chat Room Modal
+   */
+  toggleChatRoomsModal() {
+    let modals = this.state.modals;
+    modals.createChatRoom = !modals.createChatRoom;
+    this.setState(modals);
+  }
+
+  addRoom(data) {
+    console.log('addRoom', data);
+    data = {id:Math.random()};
+    this.props.actions.createChatRoom(data);
   }
 
   componentDidMount() {
     let self = this;
+    console.log(this.props.user);
+
     Auth.check().then(function(res) {
       let user = res;
 
@@ -119,33 +152,15 @@ export default class HomeScreen extends Component {
 
   render() {
 
-    let {user, connectedToServer} = this.state;
-
+    let {connectedToServer, modals} = this.state;
+    let user = this.props.user;
     /* Call avatar modal if no avatar available for the user */
-
-    const TestCard = (props) => (
-      <Card>
-        <Card.Content>
-          <Image floated='right' size='mini' src='https://react.semantic-ui.com/images/avatar/small/jenny.jpg' />
-          <Card.Header>Steve Sanders</Card.Header>
-          <Card.Meta>Friends of Elliot</Card.Meta>
-          <Card.Description>
-            Steve wants to add you to the group <strong>best friends</strong>
-          </Card.Description>
-        </Card.Content>
-        <Card.Content extra>
-          <div className='ui two buttons'>
-            <Button basic color='green'>Join</Button>
-          </div>
-        </Card.Content>
-      </Card>
-    );
 
     return(
       <div>
         <AvatarsModal user={user}
           toggleAvatarsModal={this.toggleAvatarsModal}
-          isOpen={user.avatar === ""}
+          isOpen={user.avatar === "" || modals.selectAvatar}
           updateUserToken={this.updateUserToken}>
         </AvatarsModal>
 
@@ -172,24 +187,28 @@ export default class HomeScreen extends Component {
           {/* Chat rooms Column */}
           <Grid.Column mobile={16} tablet={8} computer={10}>
             <Segment>
+            <Dimmer active={this.state.chatRoomsLoading}>
+                <Loader>Loading</Loader>
+            </Dimmer>
+            <h3>
+              Chat Rooms Available
+              <CreateChatRoomModal
+                isOpen={this.state.modals.createChatRoom}
+                toggleModal={this.toggleChatRoomsModal}
+                addRoom={this.addRoom}>
+              </CreateChatRoomModal>
+            </h3>
 
-              <h3>
-                Chat Rooms Available
-                <Button basic color='violet' floated='right' size='tiny'>
-                  <Icon name='hashtag' />
-                  Create new Room
-                </Button>
-              </h3>
+            <Divider />
 
-              <Divider />
-
-              <Grid.Row>
-                <Card.Group >
-                  { Array.apply(null, {length: 5}).map(Number.call, Number).map(card =>
-                    <TestCard key={Math.random()} />
-                  )}
-                </Card.Group>
-              </Grid.Row>
+            <Grid.Row>
+              <Card.Group >
+                {this.props.chatRooms.map((chatRoom, index) => {
+                  // return this.chatRoom(chatRoom, index);
+                  return <ChatRoomItem key={chatRoom.id} {...chatRoom}></ChatRoomItem>
+                })}
+              </Card.Group>
+            </Grid.Row>
 
             </Segment>
           </Grid.Column>
@@ -201,3 +220,19 @@ export default class HomeScreen extends Component {
     )
   }
 }
+
+function mapStateToProps(state, ownProps) {
+  console.log(ownProps);
+  return {
+    chatRooms: state.chatRooms,
+    user: state.user
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(Object.assign({}, actions, userActions), dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

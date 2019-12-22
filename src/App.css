@@ -285,3 +285,6 @@ section#content {
   font-size: 11px;
   color: rgba(0,0,0,.4);
 }
+.ui.dimmer {
+  background-color: rgba(0,0,0,.50);
+}
