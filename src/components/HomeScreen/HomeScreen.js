@@ -125,8 +125,10 @@ class HomeScreen extends Component {
 
   addRoom(data) {
     console.log('addRoom', data);
-    data = {id:Math.random()};
     this.props.actions.createChatRoom(data);
+    let {modals} = this.state;
+    modals.createChatRoom = false;
+    this.setState({modals});
   }
 
   componentDidMount() {
@@ -155,8 +157,14 @@ class HomeScreen extends Component {
     let {connectedToServer, modals} = this.state;
     let user = this.props.user;
     /* Call avatar modal if no avatar available for the user */
+    const chatRoomsItems = this.props.chatRooms.map(room => {
+
+      // console.log('room', room);
+      return <ChatRoomItem key={room.id} {...room} />
+    });
 
     return(
+
       <div>
         <AvatarsModal user={user}
           toggleAvatarsModal={this.toggleAvatarsModal}
@@ -202,12 +210,7 @@ class HomeScreen extends Component {
             <Divider />
 
             <Grid.Row>
-              <Card.Group >
-                {this.props.chatRooms.map((chatRoom, index) => {
-                  // return this.chatRoom(chatRoom, index);
-                  return <ChatRoomItem key={chatRoom.id} {...chatRoom}></ChatRoomItem>
-                })}
-              </Card.Group>
+              <Card.Group>{chatRoomsItems}</Card.Group>
             </Grid.Row>
 
             </Segment>
@@ -222,16 +225,14 @@ class HomeScreen extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  console.log(ownProps);
   return {
     chatRooms: state.chatRooms,
-    user: state.user
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(Object.assign({}, actions, userActions), dispatch)
+    actions: bindActionCreators(Object.assign({}, actions, userActions), dispatch),
   }
 }
 
