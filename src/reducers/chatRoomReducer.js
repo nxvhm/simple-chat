@@ -1,20 +1,19 @@
 import types from './../actions/types';
 
-const initialState = [
-  {id: 1221, name: 'test room 1'},
-  {id: 432423, name: 'test room 2'}
-];
 
-export default function chatRoomReducer(state = initialState, action) {
+
+export default function chatRoomReducer(state = [], action) {
   switch (action.type) {
     case types.CREATE_CHATROOM:
-      return [...state, Object.assign({}, action.chatRoom)]
-      break;
+      console.log(action);
+      return [...state, Object.assign({}, action)];
+    case types.CREATE_CHATROOM_SUCCESS:
+      return [...state, Object.assign({}, action.room)];
+    case types.GET_CHATROOMS_LIST:
+      return [...state, Object.assign({}, action.chatrooms)];
     case types.GET_CHATROOMS_SUCCESS:
       return action.chatrooms;
-      break;
     default:
       return state;
-      break;
   }
 }
