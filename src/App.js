@@ -9,6 +9,8 @@ import HomeScreen from './components/HomeScreen/HomeScreen';
 import Auth from './services/Auth';
 import {connect} from 'react-redux';
 import * as userActions from './actions/userActions';
+import * as chatRoomActions from './actions/chatRoomActions';
+import {withRouter} from 'react-router-dom'
 
 import './App.css';
 
@@ -87,13 +89,14 @@ class App extends Component {
 }
 function mapStateToProps(state, ownProps) {
   return {
-    user: state.user
+    user: state.user,
+    chatRooms: state.chatrooms
   };
 }
 
 const mapDispatchToProps = dispatch => ({
-  getUserProfile: () => dispatch(userActions.getUser())
+  getUserProfile: () => dispatch(userActions.getUser()),
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

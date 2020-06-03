@@ -11,6 +11,8 @@ import * as actions from './../../actions/chatRoomActions';
 import * as userActions from './../../actions/userActions';
 import CreateChatRoomModal from './../Chat/Room/CreateModal';
 import ChatRoomItem from './../Chat/Room/Item';
+import { withRouter } from "react-router-dom";
+
 const axios = require('axios');
 
 class HomeScreen extends Component {
@@ -56,7 +58,7 @@ class HomeScreen extends Component {
    */
   connectToServer() {
     //Initialize socket connection
-    let user = this.state.user;
+    let user = this.props.user;
     if (user && !SocketClient.isConnected()) {
 
       SocketClient.connect(
@@ -130,42 +132,37 @@ class HomeScreen extends Component {
     modals.createChatRoom = false;
     this.setState({modals});
   }
+  /** Check if logged in user available, if not go to logic screen */
+  checkUser() {
 
-  componentDidMount() {
-    let self = this;
-    console.log(this.props.user);
+    if (this.props.user) {
+      axios.defaults.headers.common = {'Authorization': `Bearer ${Auth.getToken()}`}
+    } else {
+      this.props.history.push('/');
+    }
 
-    Auth.check().then(function(res) {
-      let user = res;
-
-      if (user) {
-        axios.defaults.headers.common = {'Authorization': `Bearer ${Auth.getToken()}`}
-      } else {
-        window.location = '/';
-      }
-      self.setState({user});
-
-      if (self.state.connectedToServer === false) {
-        self.connectToServer();
-      }
-
-    });
+    console.log('connected', this.state.connectedToServer);
+    if (this.state.connectedToServer === false) {
+      this.connectToServer();
+    }
   }
+
+  componentDidMount() {}
 
   render() {
 
     let {connectedToServer, modals} = this.state;
     let user = this.props.user;
-    /* Call avatar modal if no avatar available for the user */
-    const chatRoomsItems = this.props.chatRooms.map(room => {
+    this.checkUser();
 
-      // console.log('room', room);
+    const chatRoomsItems = this.props.chatRooms.map(room => {
       return <ChatRoomItem key={room.id} {...room} />
     });
 
     return(
 
       <div>
+        {/* Call avatar modal if no avatar available for the user */}
         <AvatarsModal user={user}
           toggleAvatarsModal={this.toggleAvatarsModal}
           isOpen={user.avatar === "" || modals.selectAvatar}
@@ -236,4 +233,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomeScreen));

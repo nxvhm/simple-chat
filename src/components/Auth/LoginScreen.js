@@ -3,7 +3,7 @@ import { Button, Form, Message, Segment, Grid } from 'semantic-ui-react'
 import validator from 'validator';
 import Topbar from './../Topbar/Topbar';
 import Auth from './../../services/Auth';
-
+import { withRouter } from "react-router-dom";
 class LoginScreen extends Component {
     constructor(props) {
       super(props);
@@ -169,7 +169,7 @@ class LoginScreen extends Component {
     render() {
 
       if (this.props.user) {
-        window.location = this.state.homescreen;
+         this.props.history.push('/homescreen')
       }
 
       // this.props.location.state.successMsgContent;
@@ -194,4 +194,4 @@ class LoginScreen extends Component {
     }
 }
 
-export default LoginScreen
+export default withRouter(LoginScreen)
